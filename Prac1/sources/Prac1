@@ -1,0 +1,13 @@
+Main 
+    BFS
+    DFS
+    IDA*
+    HC
+Estat
+Llistar estat successor donat un estat
+Heurística (mesurar la qualitat d'un estat)
+Hem trobat la solució? Com parar l'algorisme.
+
+Java Version 8 Update 45 (build 1.8 0_45-b14)
+
+
