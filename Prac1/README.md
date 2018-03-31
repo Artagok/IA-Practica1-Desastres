@@ -1,6 +1,6 @@
- ### Llegiu aquest README per entendre la estructura i tal, germans
+ ## Llegiu aquest README per entendre la estructura i tal, germans
 
-Mateixa estructura de fitxers que [Montoya] (https://github.com/trenete97/IA-Practica1-Gasolina/tree/master/Practica1)
+Mateixa estructura de fitxers que [Montoya](https://github.com/trenete97/IA-Practica1-Gasolina/tree/master/Practica1)
 
 * __ProbDes__ -> .java que cal fer (GoalState, Estat, Generar Successors, Heurístics...)
 
