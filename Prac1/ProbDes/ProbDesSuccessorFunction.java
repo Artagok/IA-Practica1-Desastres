@@ -78,9 +78,9 @@ public class ProbDesSuccesorFunction implements SuccessorFunction {
                             if (PGBoard.noEsViolenRestriccions2(heli,g1,g2) && PGBoard.noEsViolenRestriccions2(heli,g2,g1)){
                                 
                                     PGBoardaux = new ProbDesEstat(PGBoard);
-                                    PGBoardaux.swapGrupMHeli(heli,g1,g2); //int int int int
-                                    PGBoardaux.reordena(heli1,sortidaG1);
-                                    PGBoardaux.reordena(heli2,sortidaG2); //sortida destí
+                                    PGBoardaux.swapGrupMHeli(heli,g1,g2); //int int int ctrl+c ctrl+v guapo eh
+                                    PGBoardaux.reordena(heli,sortidaG1);
+                                    PGBoardaux.reordena(heli,sortidaG2); //sortida destí
                                     retval.add (new Successor ("Swap Grup Mateix Helicopter", PGBoardaux));
                             }
                         }
@@ -123,7 +123,7 @@ public class ProbDesSuccesorFunction implements SuccessorFunction {
                     for (int v = 0; v < viatgesH1.size(); v++){
                         
                         PGBoardaux = new ProbDesEstat(PGBoard);
-                        PGBoardaux.moureSortida(h1,viatgesH1.get(v),h2); //int int int 
+                        PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
                         retval.add (new Successor ("Moure Sortida", PGBoardaux));
                     }
                 }
@@ -141,7 +141,7 @@ public class ProbDesSuccesorFunction implements SuccessorFunction {
                         for (int v2= 0; v2 < viatgesH1.size(); v2++){
                         
                             PGBoardaux = new ProbDesEstat(PGBoard);
-                            PGBoardaux.swapSortida(h1,viatgesH1.get(v1),h2,viatgesH2.get(v2)); //int int int int
+                            PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
                             retval.add (new Successor ("Moure Sortida", PGBoardaux));
                         }
                     }
