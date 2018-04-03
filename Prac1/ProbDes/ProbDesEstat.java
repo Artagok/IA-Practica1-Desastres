@@ -65,12 +65,10 @@ public class ProbDesEstat {
 	private ArrayList < ArrayList < Sortida > > estado;
 	
 	/* ------ CONSTRUCTORES ------ */
-	public ProbDesEstat (int seed, int g, int c, int h){
+	public ProbDesEstat (int seed, int g, int c, int h) {
 		centros = new Centros (c,h,seed);
 		grupos = new Grupos (g,seed);
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
-		//estado = new int [c*h][];   //ES POT FER AMB centros.size() i centros.get(0).NHelicopters() o algo aixi, pero teoricament es el mateix
-		//maybe un vector d'helicopters ens podria anar bé
 	}
 	
 	/* Constructora per copia */
@@ -312,14 +310,14 @@ public class ProbDesEstat {
 	public ArrayList < ArrayList < Sortida > > getEstado () {
 		return estado;
 	}
-	
+	/*
 	public Centros getCentros () { //<-----------------DE MOMENT NO FA FALTA
 		return centros;
 	}
 	
 	public Grupos getGrupos () { //<-----------------DE MOMENT NO FA FALTA
 		return grupos;
-	}
+	}*/
 	
 	public double getTempsEmpleatSortida (int heli, int sortida){
 		return estat.get(heli).get(sortida).tempsEmpleat;
@@ -355,7 +353,7 @@ public class ProbDesEstat {
 			if (grups[i] != -1) NpersonesSortida += grupos.get(grups[i]).getNPersonas();
 		}
 		
-		if (NpersonesG + NpersonesSortida > 15) return false;
+		if (NpersonesG + NpersonesSortida > MAX_PERS_HELICOPTER) return false;
 		else return true;
 	}
 	
