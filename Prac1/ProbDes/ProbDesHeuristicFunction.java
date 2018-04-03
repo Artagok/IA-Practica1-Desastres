@@ -15,11 +15,9 @@ import aima.search.framework.HeuristicFunction;
 
 public class ProbDesHeuristicFunction implements HeuristicFunction { 
 	public double getHeuristicValue(Object n){
-		ProbDesEstat board = (ProbDesEstat) n; // ???WHY declarat però no s'utilitza mai
+		ProbDesEstat board = (ProbDesEstat) n; // 
 	
-	    ArrayList < ArrayList < Sortida > > estat = ProbDesEstat.getEstado();
-	    //Centros centres = ProbDesEstat.getCentros();
-	    //Grupos grups = ProbDesEstat.getGrupos();
+	    ArrayList < ArrayList < Sortida > > estat = board.getEstado();
 	    double SumaTempsTotal = 0.0;
 	    
 		// Un helicopter tarda 1 minut en recollir una persona, 2 si és un grup de prioritat 1
@@ -34,10 +32,10 @@ public class ProbDesHeuristicFunction implements HeuristicFunction {
     	        
     	        if (primer) primer = false;
     	        else SumaTempsTotal += (10.0/60.0); //suma del cooldown de l'heli
-    	        SumaTempsTotal += ProbDesEstat.getTempsEmpleatSortida(heli,sortida);
+    	        SumaTempsTotal += board.getTempsEmpleatSortida(heli,sortida);
     	        
     	    }
     	}
     	return -SumaTempsTotal;
 	}
-}
+}	
