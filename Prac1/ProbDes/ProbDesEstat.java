@@ -102,7 +102,7 @@ public class ProbDesEstat {
 		/* Copiem tota la matriu de Sortides estado */
 		estado = new ArrayList < ArrayList < Sortida > > (0);
 		for (int i = 0; i < estatOriginal.getNHelicopters(); ++i) {
-			ArrayList < Sortida > inner = new ArrayList < Sortida > ();
+			ArrayList < Sortida > inner = new ArrayList < Sortida > (0);
 			for (int j = 0; j < estatOriginal.getNumSortides(i); ++j) {
 				Sortida s = new Sortida(estatOriginal.getSortida(i,j));
 				inner.add(s);
@@ -213,9 +213,25 @@ public class ProbDesEstat {
 	} 
 	
 	public void swapGrupDHeli (int heli1, int heli2, int g1, int g2) { //swap de g1 per g2 (i de g2 per g1), g1 era de heli1 i g2 de heli2, (despres del swap no) | les comprovacions ja estàn fetes
-		int indexSortida1 = getNumSortida(heli1,g1);
-		int indexSortida2 = getNumSortida(heli2,g2);
-		int indexGrup1 = (estado.get(heli1).get(indexSortida1)).indexGrupDinsDeSortida(g1);
+		int indexSortida1 = getNumSortida(heli1,g1); // index de la sortida on es troba g1 a heli1
+		int indexSortida2 = getNumSortida(heli2,g2); // "" heli2 
+		Sortida sx1 = (estado.get(heli1).get(indexSortida1));
+		/* System.out.println("Ensenya sortida heli1, index sortida= " + indexSortida1);
+		for (int k=0; k<3; k++){
+			System.out.print(sx1.grupsRecollits[k]+ " ");
+		}
+		System.out.println("Grup heli1 " + g1);
+        */
+		Sortida sx2 = (estado.get(heli2).get(indexSortida2));
+		
+		/* System.out.println("Ensenya sortida heli2");
+		for (int k=0; k<3; k++){
+			System.out.print(sx2.grupsRecollits[k]+ " ");
+		}
+		System.out.println("Grup heli1 " + g2);
+        */
+
+		int indexGrup1 = (estado.get(heli1).get(indexSortida1)).indexGrupDinsDeSortida(g1); 
 		int indexGrup2 = (estado.get(heli2).get(indexSortida2)).indexGrupDinsDeSortida(g2); // no(g2 pertany a la sortida)
 		estado.get(heli1).get(indexSortida1).grupsRecollits[indexGrup1] = g2;
 		estado.get(heli2).get(indexSortida2).grupsRecollits[indexGrup2] = g1;
@@ -236,10 +252,24 @@ public class ProbDesEstat {
 	} 
 	
 	public void swapSortida (int heli1, int sortida1, int heli2, int sortida2) { //sortida1 de heli1 & sortida2 de heli2 --> sortida1 de heli2 & sortida2 de heli1
+        
+        System.out.println("entra al swap sortida");
 		Sortida sortidaAux1 = new Sortida(estado.get(heli1).get(sortida1));
 		Sortida sortidaAux2 = new Sortida(estado.get(heli2).get(sortida2));
+                
+                System.out.print("heli1 abans swap: ");
+                imprimeixHeli(heli1);
+                System.out.print("heli2 abans swap: ");
+                imprimeixHeli(heli2);
 		estado.get(heli1).remove(sortida1);
+                System.out.print("heli1 despres remove sortida1: ");
+                imprimeixHeli(heli1);
+                System.out.print("heli2 despres remove sortida1: ");
+                imprimeixHeli(heli2);
 		estado.get(heli2).remove(sortida2);
+                System.out.print("heli2 despres remove sortida2: ");
+                imprimeixHeli(heli2);
+		
 		if (sortidaTePrio1(sortidaAux1)) {
 			estado.get(heli2).add(0,sortidaAux1);
 		}
@@ -252,6 +282,7 @@ public class ProbDesEstat {
 		else {
 			estado.get(heli1).add(sortidaAux2);
 		}
+        System.out.println("surt del swap sortida");
 	} 
 
 
@@ -266,13 +297,13 @@ public class ProbDesEstat {
 	}
 	
 	public ArrayList<Integer> getGrupsHeli (int heli){//ArrayList d'id de grups que transporta l'helicopter heli
-		ArrayList<Integer> idG = new ArrayList<Integer>();
+		ArrayList<Integer> idG = new ArrayList<Integer>(0);
 		for(int i = 0; i < getNumSortides(heli); i++) {	//per totes les sortides del heli
 		
 			Sortida Saux = estado.get(heli).get(i);	//ho he posat aqui, abans estava despres del 2n for /// POTSER ESTA MAL, PERO DIRIA QUE ES AIXI
 			for(int j = 0; j < 3; ++j){
 				int x = Saux.grupsRecollits[j];
-				if (x != -1) idG.add(x);
+				if (x != -1) idG.add(new Integer(x));
 			}
 		}
 		return idG;
@@ -290,45 +321,57 @@ public class ProbDesEstat {
 	public int getNumSortida (int heli, int grup){ //retorna l'index de la sortida de l'heli on apareix el grup | l'hauria de trobar si o si
 		int nS = getNumSortides(heli);
 		int i;
-		boolean trobat = false;
-		for(i = 0; i < nS && !trobat; i++){
+		for(i = 0; i < nS; i++){
 			Sortida Saux = estado.get(heli).get(i);
-			for(int j = 0; j < 3 && !trobat; j++){
-				int x = Saux.grupsRecollits[j];
-				if (x == grup) trobat = true;
-			}
+
+			if (grup == Saux.grupsRecollits[0]) return i;
+			if (grup == Saux.grupsRecollits[1]) return i;
+			if (grup == Saux.grupsRecollits[2]) return i;
+			
 		}
-		return i;
+		/*System.out.println("heli:" + heli);
+		imprimeixHeli(heli);
+		System.out.println("no s'ha trobat el grup " + grup); */
+		return -1;
 	}
 	
 	/* Retorna #Sortides de l'Helicopter heli */
-	public int getNumSortides (int heli){
+	public int getNumSortides (int heli) {
 		return estado.get(heli).size();
 	}
 	
 	/* Retorna #centres */ 
-	int getNumCentres () {
+	public int getNumCentres () {
 		return centros.size();
 	}
 	
 	/* Retorna el Centro a la posicio index de Centros*/
-	Centro getCentre (int index) {
+	public Centro getCentre (int index) {
 		return centros.get(index);
 	}
 	
 	/* Retorna #grups */
-	int getNumGrups () {
+	public int getNumGrups () {
 		return grupos.size();
 	}
 	
 	/* Retorna el Grup a la posicio index de Grupos */
-	Grupo getGrup (int index) {
+	public Grupo getGrup (int index) {
 		return grupos.get(index);
 	}
 	
 	/* Retorna la Sortida a la posicio j de l'helicopter a la posicio i a estado */
-	Sortida getSortida (int i, int j) {
+	public Sortida getSortida (int i, int j) {
 		return estado.get(i).get(j);
+	}
+
+	public void imprimeixHeli(int heli){
+		for (int s = 0; s < getNumSortides(heli); s++){
+			System.out.print(estado.get(heli).get(s).grupsRecollits[0] + " ");
+			System.out.print(estado.get(heli).get(s).grupsRecollits[1] + " ");
+			System.out.print(estado.get(heli).get(s).grupsRecollits[2]+ "    ");
+		}
+		System.out.println();
 	}
 	
 	public ArrayList < ArrayList < Sortida > > getEstado () {
@@ -363,7 +406,8 @@ public class ProbDesEstat {
 	}
 	
 	public boolean noEsViolenRestriccions1(int heli, int g, int sortida){ //té algun -1 | no viola rollo mes de 3 grups, mes de 15 persones, etc (lo del enunciat)
-		
+		System.out.println("entra a R1");
+        imprimeixHeli(heli);
 		int [] grups = estado.get(heli).get(sortida).grupsRecollits;
 		boolean hiHaEspai = false;
 		for (int i = 0 ; i < 3; i++){
@@ -376,18 +420,28 @@ public class ProbDesEstat {
 		for (int i = 0; i < 3; i++){
 			if (grups[i] != -1) NpersonesSortida += grupos.get(grups[i]).getNPersonas();
 		}
+		System.out.println("acaba a R1");
+        imprimeixHeli(heli);
 		
 		if (NpersonesG + NpersonesSortida > MAX_PERS_HELICOPTER) return false;
 		else return true;
 	}
 	
 	public boolean noEsViolenRestriccions2(int heli, int g1, int g2){ //la diferència és que en aquest es canvia el g1 pel g2. Comprova si fent aquest canvi es es viola alguna restriccio en la sortida on estava g1 (ara g2)
-		int idSortida = getNumSortida(heli, g1); //idSortida
-		int [] grups = estado.get(heli).get(idSortida).grupsRecollits;
-		for(int i = 0; i < 3; i++){
-			if(grups[i] == g1) grups[i] = -1; 
-		}
-		return noEsViolenRestriccions1(heli, g2, idSortida);
+
+        if (getNumSortida(heli,g1) == -1) return false;
+        
+		int personesg1 = grupos.get(g1).getNPersonas();
+		int personesg2 = grupos.get(g2).getNPersonas();
+		int personesSortida = 0;
+		int s = getNumSortida(heli,g1);
+		for (int i = 0; i < 3; i++){
+            if (estado.get(heli).get(s).grupsRecollits[i] != -1){
+                personesSortida += grupos.get(estado.get(heli).get(s).grupsRecollits[i]).getNPersonas();
+            }
+        }
+        if ((personesSortida - personesg1 + personesg2) <= 15) return true;
+        else return false;
 	}
 	
     public void reordena(int heli, int sortida){ //posa la millor combinació dels grups de la sortida, si no hi ha cap grup elimina la sortida
@@ -477,6 +531,7 @@ public class ProbDesEstat {
 		return minim;
 	}
 }
+
 
 /*
 comptar #-1
