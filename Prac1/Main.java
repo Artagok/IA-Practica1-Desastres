@@ -61,6 +61,3 @@ public class Main {
                                                     
                                                     /* --- Experiment Especial 8 opcional --- */
 /* el tema de System.currentTimeMillis es per l'Experiment Especial 8 (opcional, 1 punt extra) --> pàg 6 del pdf, tenim aquesta setmana si el volem fer */
-
-
-
