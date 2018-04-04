@@ -6,6 +6,8 @@ import aima.search.framework.SuccessorFunction;
 import java.util.ArrayList;
 import java.util.List;
 
+import ProbDes.ProbDesEstat;
+
 public class ProbDesSuccessorFunction implements SuccessorFunction {
     public List getSuccessors(Object state){
             System.out.println("Arribo al principi de Successors");
@@ -92,21 +94,43 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 
                 for (int heli2 = 0; heli2 < numHelicopters; heli2++){
                     
-                    ArrayList<Integer> grups1 = PGBoard.getGrupsHeli(heli1);
-                    for (int g1 = 0; g1 < grups1.size(); g1++){ 
-                    int sortidaG1 = PGBoard.getNumSortida(heli1,grups1.get(g1));
-                    
-                        ArrayList<Integer> grups2 = PGBoard.getGrupsHeli(heli2);
-                        for (int g2 = 0; g2 < grups2.size(); g2++){   
-                        int sortidaG2 = PGBoard.getNumSortida(heli2,grups2.get(g2));
+                    if (heli1 != heli2){
+                        ArrayList<Integer> grups1 = PGBoard.getGrupsHeli(heli1);
+                        /*
+                            for (int k = 0; k<grups1.size(); k++){
+                                System.out.print(grups1.get(k) + " ");
+                            }
+                            System.out.println(); */
                         
-                        if (PGBoard.noEsViolenRestriccions2(heli1,g1,g2) && PGBoard.noEsViolenRestriccions2(heli2,g2,g1)){
-                                
-                                    PGBoardaux = new ProbDesEstat(PGBoard);
-                                    PGBoardaux.swapGrupDHeli(heli1,heli2,g1,g2); //int int int int
-                                    PGBoardaux.reordena(heli1,sortidaG1);
-                                    PGBoardaux.reordena(heli2,sortidaG2); //sortida destí
-                                    retval.add (new Successor ("Swap Grup Diferent Helicopter", PGBoardaux));
+                        for (int g1 = 0; g1 < grups1.size(); g1++){ 
+                            int sortidaG1 = PGBoard.getNumSortida(heli1,grups1.get(g1));
+                        
+                            ArrayList<Integer> grups2 = PGBoard.getGrupsHeli(heli2);
+                            for (int g2 = 0; g2 < grups2.size(); g2++){   
+                                int sortidaG2 = PGBoard.getNumSortida(heli2,grups2.get(g2));
+                            
+                            if ((PGBoard.noEsViolenRestriccions2(heli1,grups1.get(g1),grups2.get(g2))) && (PGBoard.noEsViolenRestriccions2(heli2,grups2.get(g2),grups1.get(g1)))){
+
+                                        PGBoardaux = new ProbDesEstat(PGBoard);
+                                        /*
+                                        System.out.println("Estat de la copia heli1");
+                                        PGBoardaux.imprimeixHeli(heli1);
+                                        System.out.println("Estat de la copia heli2");
+                                        PGBoardaux.imprimeixHeli(heli2);
+                                        
+                                        System.out.println("Estat de l'original heli1");
+                                        PGBoard.imprimeixHeli(heli1);
+                                        System.out.println("Estat de l'original heli2");
+                                        PGBoard.imprimeixHeli(heli2);
+                                        
+                                        boolean areSame = (PGBoard == PGBoardaux);
+                                        System.out.println("ARE SAME: " + areSame);
+                                        */
+                                        PGBoardaux.swapGrupDHeli(heli1,heli2,grups1.get(g1),grups2.get(g2)); //int int int int
+                                        PGBoardaux.reordena(heli1,sortidaG1);
+                                        PGBoardaux.reordena(heli2,sortidaG2); //sortida destí
+                                        retval.add (new Successor ("Swap Grup Diferent Helicopter", PGBoardaux));
+                                }
                             }
                         }
                     }
@@ -127,7 +151,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 }
             }
                      
-            /* 
+            
             for (int heli1 = 0; heli1 < numHelicopters; heli1++){
                 
                 for (int heli2 = 0; heli2 < numHelicopters; heli2++){ 
@@ -136,8 +160,10 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     for (int v1 = 0; v1 < viatgesH1.size(); v1++){
                         
                         ArrayList<Integer> viatgesH2 = PGBoard.getViatgesHeli(heli2);
-                        for (int v2= 0; v2 < viatgesH1.size(); v2++){
+                        for (int v2= 0; v2 < viatgesH2.size(); v2++){
                         
+                            //System.out.println("entra al swap sortida");
+                            
                             PGBoardaux = new ProbDesEstat(PGBoard);
                             PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
                             retval.add (new Successor ("Swap Sortida", PGBoardaux));
@@ -145,7 +171,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     }
                 }
             }
-            */
+            
         System.out.println("He arribat al final de Successors");    
         return retval;
     }
