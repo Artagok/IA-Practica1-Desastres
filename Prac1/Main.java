@@ -26,6 +26,14 @@ public class Main {
         int nHeliXCentre = 1;
         
         ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
+
+        System.out.println("--- ESTAT INICIAL ---");
+        System.out.print('\n');
+        for (int i = 0; i < board.getEstado().size(); ++i) {
+            System.out.print("Heli " + i + " =>   ");
+            board.imprimeixHeli(i);
+        }
+        System.out.print('\n');
         
         Problem p;
         Search alg;
@@ -36,11 +44,23 @@ public class Main {
         
         SearchAgent agent = new SearchAgent(p, alg);
         
+        System.out.print('\n');
+        System.out.println("--- LLISTA D'ACCIONS ---");
+        System.out.print('\n');
+        
+        printActions(agent.getActions());
         printInstrumentation(agent.getInstrumentation());
+
+        System.out.print('\n');
+        System.out.println("--- ESTAT FINAL (sortides definitives) ---");
+        System.out.print('\n');
+        for (int i = 0; i < board.getEstado().size(); ++i) {
+            System.out.print("Heli " + i + " =>   ");
+            board.imprimeixHeli(i);
+        }
     }
     
-    
-     private static void printInstrumentation(Properties properties) { //<----- Aquestes funcions ens les donen
+    private static void printInstrumentation(Properties properties) { //<----- Aquestes funcions ens les donen
         Iterator keys = properties.keySet().iterator();
         while (keys.hasNext()) {
             String key = (String) keys.next();
