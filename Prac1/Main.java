@@ -20,18 +20,18 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        int seed = 
-        int nGrups =
-        int nCentres = 
-        int nHeliXCentre = 
+        int seed = 1234;
+        int nGrups = 10;
+        int nCentres = 5;
+        int nHeliXCentre = 1;
         
-        ProbGaseEstat board = new ProbGasEstat (seed, nGrups , nCentres , nHeliXCentre);
+        ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
         
         Problem p;
         Search alg;
         
         /* Mirar aquestes creadores que no son ProbDesEstat (Montoya) */
-        p = new Problem (board, new ProbDesSuccesorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction());
+        p = new Problem (board, new ProbDesSuccessorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction());
         alg = new HillClimbingSearch();
         
         SearchAgent agent = new SearchAgent(p, alg);
@@ -61,5 +61,6 @@ public class Main {
                                                     
                                                     /* --- Experiment Especial 8 opcional --- */
 /* el tema de System.currentTimeMillis es per l'Experiment Especial 8 (opcional, 1 punt extra) --> pàg 6 del pdf, tenim aquesta setmana si el volem fer */
+
 
 
