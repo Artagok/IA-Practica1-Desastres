@@ -141,12 +141,15 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 
                 for (int heli2 = 0; heli2 < numHelicopters; heli2++){ 
                     
-                    ArrayList<Integer> viatgesH1 = PGBoard.getViatgesHeli(heli1);
-                    for (int v = 0; v < viatgesH1.size(); v++){
-                        
-                        PGBoardaux = new ProbDesEstat(PGBoard);
-                        PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
-                        retval.add (new Successor ("Moure Sortida", PGBoardaux));
+                    if (heli1 != heli2) {
+
+                        ArrayList<Integer> viatgesH1 = PGBoard.getViatgesHeli(heli1);
+                        for (int v = 0; v < viatgesH1.size(); v++){
+                            
+                            PGBoardaux = new ProbDesEstat(PGBoard);
+                            PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
+                            retval.add (new Successor ("Moure Sortida", PGBoardaux));
+                        }
                     }
                 }
             }
@@ -156,17 +159,20 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 
                 for (int heli2 = 0; heli2 < numHelicopters; heli2++){ 
                     
-                    ArrayList<Integer> viatgesH1 = PGBoard.getViatgesHeli(heli1);
-                    for (int v1 = 0; v1 < viatgesH1.size(); v1++){
-                        
-                        ArrayList<Integer> viatgesH2 = PGBoard.getViatgesHeli(heli2);
-                        for (int v2= 0; v2 < viatgesH2.size(); v2++){
-                        
-                            //System.out.println("entra al swap sortida");
+                    if (heli1 != heli2) {
+
+                        ArrayList<Integer> viatgesH1 = PGBoard.getViatgesHeli(heli1);
+                        for (int v1 = 0; v1 < viatgesH1.size(); v1++){
                             
-                            PGBoardaux = new ProbDesEstat(PGBoard);
-                            PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
-                            retval.add (new Successor ("Swap Sortida", PGBoardaux));
+                            ArrayList<Integer> viatgesH2 = PGBoard.getViatgesHeli(heli2);
+                            for (int v2= 0; v2 < viatgesH2.size(); v2++){
+                            
+                                //System.out.println("entra al swap sortida");
+                                
+                                PGBoardaux = new ProbDesEstat(PGBoard);
+                                PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
+                                retval.add (new Successor ("Swap Sortida", PGBoardaux));
+                            }
                         }
                     }
                 }
@@ -176,4 +182,3 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
         return retval;
     }
 }
-

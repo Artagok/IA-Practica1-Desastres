@@ -69,10 +69,11 @@ public class ProbDesEstat {
 	public ProbDesEstat (int seed, int g, int c, int h) {
 		centros = new Centros (c,h,seed);
 		grupos = new Grupos (g,seed);
-		System.out.println(seed);
-		System.out.println(g);
-		System.out.println(c);
-		System.out.println(h);
+		System.out.println("seed: " + seed);
+		System.out.println("nGrups: " + g);
+		System.out.println("nCentres: " + c);
+		System.out.println("nHelicoptersXCentre: " + h);
+		System.out.println("--------------------------------");
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
 		sol_ini2(c,h);
 	}
@@ -262,13 +263,13 @@ public class ProbDesEstat {
                 System.out.print("heli2 abans swap: ");
                 imprimeixHeli(heli2);
 		estado.get(heli1).remove(sortida1);
-                System.out.print("heli1 despres remove sortida1: ");
-                imprimeixHeli(heli1);
-                System.out.print("heli2 despres remove sortida1: ");
-                imprimeixHeli(heli2);
+                //System.out.print("heli1 despres remove sortida1: ");
+                //imprimeixHeli(heli1);
+                //System.out.print("heli2 despres remove sortida1: ");
+                //imprimeixHeli(heli2);
 		estado.get(heli2).remove(sortida2);
-                System.out.print("heli2 despres remove sortida2: ");
-                imprimeixHeli(heli2);
+                //System.out.print("heli2 despres remove sortida2: ");
+				//imprimeixHeli(heli2);
 		
 		if (sortidaTePrio1(sortidaAux1)) {
 			estado.get(heli2).add(0,sortidaAux1);
@@ -282,7 +283,11 @@ public class ProbDesEstat {
 		else {
 			estado.get(heli1).add(sortidaAux2);
 		}
-        System.out.println("surt del swap sortida");
+		System.out.println("	  ------------------------------");
+		System.out.print("heli1 despr swap: ");	imprimeixHeli(heli1);
+		System.out.print("heli2 despr swap: ");	imprimeixHeli(heli2);
+		System.out.println("surt del swap sortida");
+		System.out.print('\n');
 	} 
 
 
@@ -369,7 +374,7 @@ public class ProbDesEstat {
 		for (int s = 0; s < getNumSortides(heli); s++){
 			System.out.print(estado.get(heli).get(s).grupsRecollits[0] + " ");
 			System.out.print(estado.get(heli).get(s).grupsRecollits[1] + " ");
-			System.out.print(estado.get(heli).get(s).grupsRecollits[2]+ "    ");
+			System.out.print(estado.get(heli).get(s).grupsRecollits[2] + "    ");
 		}
 		System.out.println();
 	}
