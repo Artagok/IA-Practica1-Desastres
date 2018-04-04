@@ -38,10 +38,11 @@ public class ProbDesEstat {
 		}
 		
 		//Retorna 0 | 1 | 2 depenent de en quina posicio de grupsRecollits de la Sortida es trobi el Grup grup
-		public indexGrupDinsDeSortida (int grup) {
+		public int indexGrupDinsDeSortida (int grup) {
 			if (grupsRecollits[0] == grup) return 0;
 			if (grupsRecollits[1] == grup) return 1;
 			if (grupsRecollits[2] == grup) return 2;
+			System.out.println("grup no pertany a la sortida");
 			return -1; //en principi no s'hi ha d'arribar mai. Cal estar segur que el grup es troba a la Sortida
 		}
 	}
@@ -68,23 +69,38 @@ public class ProbDesEstat {
 	public ProbDesEstat (int seed, int g, int c, int h) {
 		centros = new Centros (c,h,seed);
 		grupos = new Grupos (g,seed);
+		System.out.println(seed);
+		System.out.println(g);
+		System.out.println(c);
+		System.out.println(h);
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
+		sol_ini2(c,h);
 	}
 	
 	/* Constructora per copia */
 	public ProbDesEstat(ProbDesEstat estatOriginal) {
 		
-		/* Copiem tots els centres a centros */
+		/* Copiem tots els centres a centros */ /*Perdona Java, sóc retrassat, eren variables static !!! */
+   		/*
+   		int n = estatOriginal.getNumCentres();
+		System.out.println(centros.size());
+		centros = new ArrayList<Centro> (0);
 		for (int i = 0; i < estatOriginal.getNumCentres(); ++i) {
-			centros.add(estatOriginal.getCentre(i));
-		}
-		
+		    Centro centreOr = estatOriginal.getCentre(i);
+		    Centro centreAux = new Centro(centreOr.getCoordX(),centreOr.getCoordY(),centreOr.getNHelicopteros());
+			centros.add(centreAux);
+		} */
+
+		 //System.out.println("He acabat de copiar centros");
 		/* Copiem tots els grups a grupos */
-		for (int i = 0; i < estatOriginal.getNumGrups(); ++i) {
-			grupos.add(estatOriginal.getGrup(i));
-		}
+		/*for (int i = 0; i < estatOriginal.getNumGrups(); ++i) {
+			Grupo grupOr = estatOriginal.getGrup(i);
+			Grupo grupAux = new Grupo(grupOr.getCoordX(),grupOr.getCoordY(),grupOr.getNPersonas(),grupOr.getPrioridad());
+			grupos.add(grupAux);
+		} */
 		
 		/* Copiem tota la matriu de Sortides estado */
+		estado = new ArrayList < ArrayList < Sortida > > (0);
 		for (int i = 0; i < estatOriginal.getNHelicopters(); ++i) {
 			ArrayList < Sortida > inner = new ArrayList < Sortida > ();
 			for (int j = 0; j < estatOriginal.getNumSortides(i); ++j) {
@@ -125,14 +141,20 @@ public class ProbDesEstat {
 		}
 	}	
 	//solucio inicial 2:
-	public void sol_ini2 () {    
+	public void sol_ini2 (int c, int h) {    
 		
 	
-		int n = estado.size();
+		int n = c * h;
+		
+		for (int i = 0; i < n; ++i) {
+		    estado.add(new ArrayList<Sortida>(0));  
+		}
 		
 		for(int i = 0; i < grupos.size(); i++){
 		
 			Sortida s = new Sortida();
+			System.out.println(estado.size());
+			System.out.println(i);
 			int XC = centros.get(i%n).getCoordX();
 			int YC = centros.get(i%n).getCoordY();
 			
@@ -153,6 +175,7 @@ public class ProbDesEstat {
 			
 			estado.get(i%n).add(s);
 		}
+		System.out.println("Surto del for de ini2");
 	}
 
  
@@ -193,7 +216,7 @@ public class ProbDesEstat {
 		int indexSortida1 = getNumSortida(heli1,g1);
 		int indexSortida2 = getNumSortida(heli2,g2);
 		int indexGrup1 = (estado.get(heli1).get(indexSortida1)).indexGrupDinsDeSortida(g1);
-		int indexGrup2 = (estado.get(heli2).get(indexSortida2)).indexGrupDinsDeSortida(g2);
+		int indexGrup2 = (estado.get(heli2).get(indexSortida2)).indexGrupDinsDeSortida(g2); // no(g2 pertany a la sortida)
 		estado.get(heli1).get(indexSortida1).grupsRecollits[indexGrup1] = g2;
 		estado.get(heli2).get(indexSortida2).grupsRecollits[indexGrup2] = g1;
 	}
@@ -243,11 +266,11 @@ public class ProbDesEstat {
 	}
 	
 	public ArrayList<Integer> getGrupsHeli (int heli){//ArrayList d'id de grups que transporta l'helicopter heli
-		ArrayList<Integer> idG = new ArrayList();
+		ArrayList<Integer> idG = new ArrayList<Integer>();
 		for(int i = 0; i < getNumSortides(heli); i++) {	//per totes les sortides del heli
 		
 			Sortida Saux = estado.get(heli).get(i);	//ho he posat aqui, abans estava despres del 2n for /// POTSER ESTA MAL, PERO DIRIA QUE ES AIXI
-			for(int j = 0; j < 3; ++k){
+			for(int j = 0; j < 3; ++j){
 				int x = Saux.grupsRecollits[j];
 				if (x != -1) idG.add(x);
 			}
@@ -257,17 +280,18 @@ public class ProbDesEstat {
 	
 	public ArrayList<Integer> getViatgesHeli (int heli){//ArrayList d'indexs de les sortides que fa l'helicopter heli | si en fa 3 : 0 1 2
 		int numS =  getNumSortides(heli);
-		ArrayList<Integer> indexSortides = new ArrayList(numS);
+		ArrayList<Integer> indexSortides = new ArrayList<Integer>(numS);
 		for(int i = 0; i < numS; i++) {
-			indexSortides.set(i,i);     //esta inicialitzant el ArrayList amb el seu index. El que no se es si el set funciona quan ArrayList no te valors assignats
+			indexSortides.add(i);     //esta inicialitzant el ArrayList amb el seu index. El que no se es si el set funciona quan ArrayList no te valors assignats
 		}
 		return indexSortides;
 	}
 	
 	public int getNumSortida (int heli, int grup){ //retorna l'index de la sortida de l'heli on apareix el grup | l'hauria de trobar si o si
 		int nS = getNumSortides(heli);
+		int i;
 		boolean trobat = false;
-		for(int i = 0; i<nS && !trobat; i++){
+		for(i = 0; i < nS && !trobat; i++){
 			Sortida Saux = estado.get(heli).get(i);
 			for(int j = 0; j < 3 && !trobat; j++){
 				int x = Saux.grupsRecollits[j];
@@ -320,7 +344,7 @@ public class ProbDesEstat {
 	}*/
 	
 	public double getTempsEmpleatSortida (int heli, int sortida){
-		return estat.get(heli).get(sortida).tempsEmpleat;
+		return estado.get(heli).get(sortida).tempsEmpleat;
 	}
 	
 	
@@ -329,8 +353,8 @@ public class ProbDesEstat {
 	public boolean sortidaTePrio1 (Sortida s) {
 		for (int i = 0; i < 3; i++) {
 			int grupIndex = s.grupsRecollits[i];
-			if (grupdIndex != -1) {
-				if (grupos[grupIndex].getPrioridad() == 1) {
+			if (grupIndex != -1) {
+				if (grupos.get(grupIndex).getPrioridad() == 1) {
 					return true;
 				}
 			}
@@ -374,8 +398,8 @@ public class ProbDesEstat {
         int apuntador = 0;
         int idCentre = heli/centros.get(0).getNHelicopteros(); //agafar el centre a partir del id helicopter!! (i/#HELIxCENTRE )
         
-        int XC = centros.get(idCentre).getCoordX;
-        int XY = centros.get(idCentre).getCoordY;
+        int XC = centros.get(idCentre).getCoordX();
+        int XY = centros.get(idCentre).getCoordY();
         
         for(int k=0;k<3;k++){
             if(indexGrups[k] != -1) {
@@ -388,12 +412,12 @@ public class ProbDesEstat {
         else if(count == 1) estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],-1,-1};
         else if(count == 2) estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],grupsRescatats[1],-1};
         else {	
-        	int XG1 = grups.get(grupsRescatats[0]).getCoordX;
-        	int YG1 = grups.get(grupsRescatats[0]).getCoordY;
-        	int XG2 = grups.get(grupsRescatats[1]).getCoordX;
-        	int YG2 = grups.get(grupsRescatats[1]).getCoordY;
-        	int XG3 = grups.get(grupsRescatats[2]).getCoordX;
-        	int YG3 = grups.get(grupsRescatats[2]).getCoordY;
+        	int XG1 = grupos.get(grupsRescatats[0]).getCoordX();
+        	int YG1 = grupos.get(grupsRescatats[0]).getCoordY();
+        	int XG2 = grupos.get(grupsRescatats[1]).getCoordX();
+        	int YG2 = grupos.get(grupsRescatats[1]).getCoordY();
+        	int XG3 = grupos.get(grupsRescatats[2]).getCoordX();
+        	int YG3 = grupos.get(grupsRescatats[2]).getCoordY();
         	
         	double op1 = quantskm (XC, XY, XG1, YG1, XG2, YG2, XG3, YG3);
         	double op2 = quantskm (XC, XY, XG1, YG1, XG3, YG3, XG2, YG2);
@@ -420,8 +444,8 @@ public class ProbDesEstat {
         		if (prio == 1) temps += (np * 2)/60;
         		else temps += np/60;
         	}
-        	estat.get(heli).get(sortida).tempsEmpleat = temps;
-        	estat.get(heli).get(sortida).kmViatjats = bestop;
+        	estado.get(heli).get(sortida).tempsEmpleat = temps;
+        	estado.get(heli).get(sortida).kmViatjats = bestop;
         }   	
         
 	}
@@ -471,3 +495,4 @@ comptar #-1
 				 z,x,y
 				 z,y,x
 */
+

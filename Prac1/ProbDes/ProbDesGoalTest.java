@@ -2,9 +2,9 @@ package ProbDes;
 
 import aima.search.framework.GoalTest;
 
-public class DesastresGoalTest implements GoalTest {
+public class ProbDesGoalTest implements GoalTest {
     
-    public boolean isGoalTest(Object aState) {
+    public boolean isGoalState(Object aState) {
         return (false);
     }
 }

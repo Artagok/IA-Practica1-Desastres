@@ -5,6 +5,8 @@ import IA.Desastres.Grupo;
 import IA.Desastres.Centros;
 import IA.Desastres.Centro;
 
+import ProbDes.ProbDesEstat.Sortida;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,3 +41,4 @@ public class ProbDesHeuristicFunction implements HeuristicFunction {
     	return -SumaTempsTotal;
 	}
 }	
+
