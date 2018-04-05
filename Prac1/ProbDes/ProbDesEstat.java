@@ -125,8 +125,12 @@ public class ProbDesEstat {
 	
 	/* ------ SOLUCIONS INICIALS ------ */
 	// solucio inicial 1:
-	public void sol_ini1 () {
-	
+	public void sol_ini1 (int c, int h) {
+		
+		int n = c * h;
+		for (int i = 0; i < n; ++i) {
+		    estado.add(new ArrayList<Sortida>(0));  
+		}
 		// Fora del bucle pq sempre s'agafen les coordenades del centre 0
 		int XC = centros.get(0).getCoordX();
 		int YC = centros.get(0).getCoordY();
