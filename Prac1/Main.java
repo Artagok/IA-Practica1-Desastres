@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         int seed = 1234;
-        int nGrups = 10;
+        int nGrups = 100;
         int nCentres = 5;
         int nHeliXCentre = 1;
         
@@ -58,6 +58,21 @@ public class Main {
             System.out.print("Heli " + i + " =>   ");
             board.imprimeixHeli(i);
         }
+        System.out.print('\n');
+        System.out.print("temps total: ");
+        double tempsTotal = 0.0;
+        int numSortides = 0;
+        for (int u = 0 ; u < board.getEstado().size(); u++) {
+			numSortides += board.getNumSortides(u);
+			for (int sort = 0; sort < board.getEstado().get(u).size();sort++) {
+				tempsTotal += board.getTempsEmpleatSortida(u, sort);
+			}
+		}
+		
+		if(numSortides > 0)  tempsTotal += ((numSortides-1)*10)/60.0;
+		tempsTotal *= 60; 
+		System.out.print(tempsTotal + "\n");
+        
     }
     
     private static void printInstrumentation(Properties properties) { //<----- Aquestes funcions ens les donen
