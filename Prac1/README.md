@@ -1,3 +1,9 @@
+ ## Operadors que no modifiquen estat original: 
+
+ 5. Moure sortida -> Ho fa tot el mateix helicòpter i quan esta buit para
+ 6. Swap sortida -> Fa swap i ordena raro
+ 
+ 
  ## Llegiu aquest README per entendre la estructura i tal, germans
 
 Mateixa estructura de fitxers que [Montoya](https://github.com/trenete97/IA-Practica1-Gasolina/tree/master/Practica1)
@@ -19,3 +25,10 @@ Mateixa estructura de fitxers que [Montoya](https://github.com/trenete97/IA-Prac
 També hi ha el pdf enunciat i aquest README
 
 *Creuem els dits perquè no sé com ens en sortirem d'aquesta. __RIP__*
+
+seed = 1234
+solucio incial = sol1 (tots els grups a heli0 amb un 1 grup per sortida)
+No aplicar cap operador!
+nGrups = 100
+nCentres = 5 
+ha de donar 5462,83 (suposem que esta en minuts)
