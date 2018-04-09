@@ -86,7 +86,7 @@ public class ProbDesEstat {
 		System.out.println("nHelicoptersXCentre: " + h);
 		System.out.println("--------------------------------");
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
-		sol_ini2(c,h);
+		sol_ini1(c,h);
 	}
 	
 	/* Constructora per copia */
@@ -134,7 +134,8 @@ public class ProbDesEstat {
 		// Fora del bucle pq sempre s'agafen les coordenades del centre 0
 		int XC = centros.get(0).getCoordX();
 		int YC = centros.get(0).getCoordY();
-	
+		System.out.println(XC);
+		System.out.println(YC);
 		for(int i = 0; i < grupos.size(); i++) {//S'HA DE MIRAR QUAN ES AIXI O grupos=new Grupos(ngrupos, seed)
 			Sortida s = new Sortida();
 	
@@ -142,13 +143,15 @@ public class ProbDesEstat {
 			int YG = grupos.get(i).getCoordY();
 			int np = grupos.get(i).getNPersonas();
 			int prio = grupos.get(i).getPrioridad();
-			
+			System.out.println(XG);
+			System.out.println(YG);
+			System.out.println(np);
+			System.out.println(prio);
 			double distancia = Math.sqrt((Math.pow(XG - XC, 2)) + (Math.pow(YG - YC, 2))); //distancia en km
-		
-			double temps = distancia / VELOCITAT_HELICOPTER;	//TEMPS en h que es triga en anar i tornar al lloc, sense recollir a ningu
-			if(prio == 1) temps += (np * 2)/60;	//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 1
-			else temps += np/60;				//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 2
-			
+			System.out.println(distancia);
+			double temps = ((distancia * 2 )/ VELOCITAT_HELICOPTER);	//TEMPS en h que es triga en anar i tornar al lloc, sense recollir a ningu
+			if(prio == 1) temps += (np * 2)/60.0;	//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 1
+			else temps += np/60.0;				//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 2
 			s.grupsRecollits = new int[] {i,-1,-1}; //s.grupsRecollits[0]=i
 			s.tempsEmpleat = temps;
 			s.kmViatjats = distancia + distancia; //dist anada + dist tornada
@@ -181,9 +184,9 @@ public class ProbDesEstat {
 			
 			double distancia = Math.sqrt((Math.pow(XG - XC, 2)) + (Math.pow(YG - YC, 2)));
 			
-			double temps = distancia / VELOCITAT_HELICOPTER;	//TEMPS en h que es triga en anar i tornar al lloc, sense recollir a ningu
-			if(prio == 1) temps += (np * 2)/60;	//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 1
-			else temps += np/60;				//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 2
+			double temps = (distancia / VELOCITAT_HELICOPTER)*2;	//TEMPS en h que es triga en anar i tornar al lloc, sense recollir a ningu
+			if(prio == 1) temps += (np * 2)/60.0;	//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 1
+			else temps += np/60.0;				//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 2
 			
 			s.grupsRecollits = new int[] {i,-1,-1};
 			s.tempsEmpleat = temps;
