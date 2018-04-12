@@ -4,7 +4,7 @@
 3. Print Estat final
 4. Heuristic 2 (que impliquen canvis al Main)
 5. Simulated Annealing (que implica canvis al Main i a Successors)
-6. Crear sol_ini_3 (una mica mes currada)
+6. Crear sol_ini_3 (una mica mes currada) (estic pensant, o fer qua cada heli comensa amb 2 grups per sortida, o algo molt tocho en plan que compara quin grup esta mes aprop i fa que comencin amb aquests asignats)
 7. Experiments + graficar 
 8. Memòria
 
