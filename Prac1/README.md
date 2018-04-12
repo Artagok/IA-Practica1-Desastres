@@ -1,9 +1,15 @@
- ## Operadors que no modifiquen estat original: 
+# TO DO
+1. Arreglar Reordena
+2. Arreglar Operador 2
+3. Print Estat final
+4. Heuristic 2 (que impliquen canvis al Main)
+5. Simulated Annealing (que implica canvis al Main i a Successors)
+6. Crear sol_ini_3 (una mica mes currada)
+7. Experiments + graficar 
+8. Memòria
 
- 5. Moure sortida -> Ho fa tot el mateix helicòpter i quan esta buit para
- 6. Swap sortida -> Fa swap i ordena raro
- 
- 
+No creem Sortides noves en els 2 primers operadors (Justificar)
+
  ## Llegiu aquest README per entendre la estructura i tal, germans
 
 Mateixa estructura de fitxers que [Montoya](https://github.com/trenete97/IA-Practica1-Gasolina/tree/master/Practica1)
