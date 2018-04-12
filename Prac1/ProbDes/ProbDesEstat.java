@@ -43,7 +43,7 @@ public class ProbDesEstat {
 		
 		//Creadora per còpia, retorna una Sortida igual que la Sortida s
 		public Sortida(Sortida s) {
-			this.grupsRecollits = s.grupsRecollits;
+			this.grupsRecollits = s.grupsRecollits.clone();
 			this.tempsEmpleat = s.tempsEmpleat;
 			this.kmViatjats = s.kmViatjats;
 		}
@@ -86,7 +86,7 @@ public class ProbDesEstat {
 		System.out.println("nHelicoptersXCentre: " + h);
 		System.out.println("--------------------------------");
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
-		sol_ini1(c,h);
+		sol_ini2(c,h);
 	}
 	
 	/* Constructora per copia */
@@ -393,9 +393,14 @@ public class ProbDesEstat {
 
 	public void imprimeixHeli(int heli){
 		for (int s = 0; s < getNumSortides(heli); s++){
-			System.out.print(estado.get(heli).get(s).grupsRecollits[0] + " ");
-			System.out.print(estado.get(heli).get(s).grupsRecollits[1] + " ");
-			System.out.print(estado.get(heli).get(s).grupsRecollits[2] + "    ");
+			if (estado.get(heli).get(s).grupsRecollits[0] == -1) System.out.print("_ ");
+			else System.out.print(estado.get(heli).get(s).grupsRecollits[0] + " ");
+			
+			if (estado.get(heli).get(s).grupsRecollits[1] == -1) System.out.print("_ ");
+			else System.out.print(estado.get(heli).get(s).grupsRecollits[1] + " ");
+			
+			if (estado.get(heli).get(s).grupsRecollits[2] == -1) System.out.print("_   ");
+			else System.out.print(estado.get(heli).get(s).grupsRecollits[2] + "  ");
 		}
 		System.out.println();
 	}
@@ -403,14 +408,7 @@ public class ProbDesEstat {
 	public ArrayList < ArrayList < Sortida > > getEstado () {
 		return estado;
 	}
-	/*
-	public Centros getCentros () { //<-----------------DE MOMENT NO FA FALTA
-		return centros;
-	}
-	
-	public Grupos getGrupos () { //<-----------------DE MOMENT NO FA FALTA
-		return grupos;
-	}*/
+
 	
 	public double getTempsEmpleatSortida (int heli, int sortida){
 		return estado.get(heli).get(sortida).tempsEmpleat;
