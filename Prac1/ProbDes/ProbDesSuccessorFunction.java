@@ -20,13 +20,14 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
             
             int numHelicopters = PGBoard.getNHelicopters();
             
+            /*
               System.out.println("-estat intermigPRINCIPI ORIGINAL-");
              for (int i=0;i<numHelicopters; i++){
                 System.out.print("heli" + i + " => ");
                 PGBoard.imprimeixHeli(i);
              }
              System.out.println();
-            
+            */
             for (int heli = 0; heli < numHelicopters; heli++) {
     
                 ArrayList<Integer> grups = PGBoard.getGrupsHeli(heli); //<----- id dels grups
@@ -39,14 +40,14 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     for (int sortida = 0; sortida < num_sortides; sortida++){
                     
                         if (PGBoard.noEsViolenRestriccions1(heli,g,sortida) && sortida_origen != sortida) {
-                           
+                           /*
                               System.out.println("-estat intermigORIGINAL despres getters-");
                                 for (int i=0;i<numHelicopters; i++){
                                     System.out.print("heli" + i + " => ");
                                     PGBoard.imprimeixHeli(i);
                                 }
                                 System.out.println();
-                                
+                                */
                             PGBoardaux = new ProbDesEstat(PGBoard);
                             ProbDesEstat.SortidaEsborrada sE = PGBoardaux.new SortidaEsborrada(); // false,-1
                             PGBoardaux.moureGrupDHeli(heli,heli,grups.get(g),sortida); //int int int
@@ -64,7 +65,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                             
 
                             retval.add (new Successor ("Moure Grup Mateix Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
-                            
+                            /*
                             System.out.println("-estat MOURE GRUP MATEIX HELI " + heli + " AUX");
                                     for (int ii=0;ii<numHelicopters; ii++){
                                         System.out.print("heli" + ii + " => ");
@@ -77,10 +78,11 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                         PGBoard.imprimeixHeli(i);
                                     }
                                     System.out.println();
-                                    }
+                                   */ }
                     }
                 }
             } 
+            /*
             System.out.println();
             
             System.out.println("-estat intermig ORIGINAL-");
@@ -89,8 +91,10 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 PGBoard.imprimeixHeli(i);
              }
              System.out.println();
-             
+             */
+            
             //2n operador encara no funciona
+            
             /*
             for (int heli1 = 0; heli1 < numHelicopters; heli1++){
                 
@@ -133,14 +137,14 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                         if (grups1.get(g1) != grups2.get(g2)){
                             
                             if (PGBoard.noEsViolenRestriccions2(heli,grups1.get(g1),grups2.get(g2)) && PGBoard.noEsViolenRestriccions2(heli,grups2.get(g2),grups1.get(g1))){
-                             
+               /*              
             System.out.println("-estat intermig despres getters-");
              for (int i=0;i<numHelicopters; i++){
                 System.out.print("heli" + i + " => ");
                 PGBoard.imprimeixHeli(i);
              }
              System.out.println();
-                                
+                */                
                                     PGBoardaux = new ProbDesEstat(PGBoard);
                                     
                                     ProbDesEstat.SortidaEsborrada sE_noUtil = PGBoardaux.new SortidaEsborrada(); 
@@ -149,7 +153,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                     PGBoardaux.reordena(heli,sortidaG1,sE_noUtil);
                                     PGBoardaux.reordena(heli,sortidaG2,sE_noUtil); //sortida destí
                                     retval.add (new Successor ("Swap Grup Mateix Helicopter", PGBoardaux));
-                                    
+                                    /*
                                     System.out.println("-estat SWAP GRUP M HELI");
                                     for (int ii=0;ii<numHelicopters; ii++){
                                         System.out.print("heli" + ii + " => ");
@@ -161,7 +165,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 System.out.print("heli" + i + " => ");
                 PGBoard.imprimeixHeli(i);
              }
-             System.out.println();
+             System.out.println();*/
                             }
                         }
                     }
@@ -222,7 +226,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     }
                 }
             }  
-            
+            /*
             System.out.println("-estat intermig ORIGINAL-");
              for (int i=0;i<numHelicopters; i++){
                 System.out.print("heli" + i + " => ");
@@ -231,7 +235,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
              System.out.println();
                  
              System.out.println();
-             
+            */ 
             
             for (int heli1 = 0; heli1 < numHelicopters; heli1++){
                 
@@ -242,18 +246,18 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                         ArrayList<Integer> viatgesH1 = PGBoard.getViatgesHeli(heli1);
                         for (int v = 0; v < viatgesH1.size(); v++){
                             
-                           
+                           /*
 							System.out.println("-estat intermig ORIGINAL despres getters-");
                             for (int i=0;i<numHelicopters; i++){
 								System.out.print("heli" + i + " => ");
 								PGBoard.imprimeixHeli(i);
 							 }
 							 System.out.println();
-							 
+							 */
 							PGBoardaux = new ProbDesEstat(PGBoard);
 							PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
 							retval.add (new Successor ("Moure Sortida", PGBoardaux));
-							
+							/*
 							System.out.println("-estat MOURE SORTIDA");
 									for (int ii=0;ii<numHelicopters; ii++){
 										System.out.print("heli" + ii + " => ");
@@ -266,7 +270,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
 								PGBoard.imprimeixHeli(i);
 							 }
 							 System.out.println();
-                           
+                           */
                         }
                     }
                      
@@ -294,7 +298,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                 PGBoardaux = new ProbDesEstat(PGBoard);
                                 PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
                                 retval.add (new Successor ("Swap Sortida", PGBoardaux));
-														   
+											/*			   
 										System.out.println("-estat intermig ORIGINAL despres getters-");
 										 for (int i=0;i<numHelicopters; i++){
 											System.out.print("heli" + i + " => ");
@@ -314,7 +318,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
 											PGBoard.imprimeixHeli(i);
 										 }
 										 System.out.println();
-										 
+										 */
                             }			
                         }
                     }
@@ -322,7 +326,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
             }
          
             
-            
+        /*    
         System.out.println("-estat intermigFINAL ORIGINAL-");
              for (int i=0;i<numHelicopters; i++){
                 System.out.print("heli" + i + " => ");
@@ -332,7 +336,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
              System.out.println();
               System.out.println();
                System.out.println();
-        
+        */
       
         //System.out.println("He arribat al final de Successors");    
         return retval;

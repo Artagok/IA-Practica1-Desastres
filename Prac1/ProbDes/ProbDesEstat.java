@@ -174,8 +174,8 @@ public class ProbDesEstat {
 			Sortida s = new Sortida();
 			//System.out.println(estado.size());
 			//System.out.println(i);
-			int XC = centros.get(i%n).getCoordX();
-			int YC = centros.get(i%n).getCoordY();
+			int XC = centros.get(i%c).getCoordX();
+			int YC = centros.get(i%c).getCoordY();
 			
 			int XG = grupos.get(i).getCoordX();
 			int YG = grupos.get(i).getCoordY();
@@ -468,7 +468,7 @@ public class ProbDesEstat {
         else return false;
 	}
 	
-    public void reordena(int heli, int sortida, SortidaEsborrada sE){ //posa la millor combinació dels grups de la sortida, si no hi ha cap grup elimina la sortida
+   public void reordena(int heli, int sortida, SortidaEsborrada sE){ //posa la millor combinació dels grups de la sortida, si no hi ha cap grup elimina la sortida
         int [] indexGrups = new int[3];
 		int [] grupsRescatats = new int[3];
 		//System.out.println("------ Entro a reordena ------");
@@ -480,7 +480,7 @@ public class ProbDesEstat {
         int idCentre = heli/centros.get(0).getNHelicopteros(); //agafar el centre a partir del id helicopter!! (i/#HELIxCENTRE )
         
         int XC = centros.get(idCentre).getCoordX();
-        int XY = centros.get(idCentre).getCoordY();
+        int YC = centros.get(idCentre).getCoordY();
         
         for(int k=0;k<3;k++){
             if(indexGrups[k] != -1) {
@@ -495,44 +495,77 @@ public class ProbDesEstat {
 			sE.esborrada_ = true; 
 			sE.sortidaEsborrada = sortida; 
 		}
-        else if(count == 1) estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],-1,-1};
-        else if(count == 2) estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],grupsRescatats[1],-1};
-        else {	
-        	int XG1 = grupos.get(grupsRescatats[0]).getCoordX();
-        	int YG1 = grupos.get(grupsRescatats[0]).getCoordY();
-        	int XG2 = grupos.get(grupsRescatats[1]).getCoordX();
-        	int YG2 = grupos.get(grupsRescatats[1]).getCoordY();
-        	int XG3 = grupos.get(grupsRescatats[2]).getCoordX();
-        	int YG3 = grupos.get(grupsRescatats[2]).getCoordY();
-        	
-        	double op1 = quantskm (XC, XY, XG1, YG1, XG2, YG2, XG3, YG3);
-        	double op2 = quantskm (XC, XY, XG1, YG1, XG3, YG3, XG2, YG2);
-        	double op3 = quantskm (XC, XY, XG2, YG2, XG1, YG1, XG3, YG3);
-        	double op4 = quantskm (XC, XY, XG2, YG2, XG3, YG3, XG1, YG1);
-        	double op5 = quantskm (XC, XY, XG3, YG3, XG1, YG1, XG2, YG2);
-        	double op6 = quantskm (XC, XY, XG3, YG3, XG2, YG2, XG1, YG1);
-        	
-        	double bestop = minimkm(op1,op2,op3,op4,op5,op6);
-        	int [] grupsordreFinal = new int[3];
-        	
-        	if (bestop == op1)  grupsordreFinal = new int[]{grupsRescatats[0],grupsRescatats[1],grupsRescatats[2]};
-        	else if (bestop == op2)  grupsordreFinal = new int[]{grupsRescatats[0],grupsRescatats[2],grupsRescatats[1]};
-        	else if (bestop == op3)  grupsordreFinal = new int[]{grupsRescatats[1],grupsRescatats[0],grupsRescatats[2]};
-        	else if (bestop == op4)  grupsordreFinal = new int[]{grupsRescatats[1],grupsRescatats[2],grupsRescatats[0]};
-        	else if (bestop == op5)  grupsordreFinal = new int[]{grupsRescatats[2],grupsRescatats[0],grupsRescatats[1]};
-        	else if (bestop == op6)  grupsordreFinal = new int[]{grupsRescatats[2],grupsRescatats[1],grupsRescatats[0]};
-        	
-        	estado.get(heli).get(sortida).grupsRecollits = grupsordreFinal;
-        	double temps = bestop/VELOCITAT_HELICOPTER;
-        	for(int j=0;j<3;++j) {
-        		int prio = grupos.get(grupsordreFinal[j]).getPrioridad();
-        		int np = grupos.get(grupsordreFinal[j]).getNPersonas();
-        		if (prio == 1) temps += (np * 2)/60;
-        		else temps += np/60;
-        	}
-        	estado.get(heli).get(sortida).tempsEmpleat = temps;
-        	estado.get(heli).get(sortida).kmViatjats = bestop;
-        }   	
+        else { 
+			int XG1 = grupos.get(grupsRescatats[0]).getCoordX();
+			int YG1 = grupos.get(grupsRescatats[0]).getCoordY();
+			double km;
+			int np;
+			int prio;
+			double dist;
+			double temps;
+			if(count == 1) {
+				estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],-1,-1};
+				dist = (Math.sqrt (Math.pow(XG1-XC,2) + Math.pow(YG1-YC,2)))*2;
+				temps = dist/VELOCITAT_HELICOPTER;
+				np = grupos.get(grupsRescatats[0]).getNPersonas();
+				prio = grupos.get(grupsRescatats[0]).getPrioridad();
+				if(prio == 1) temps += (np * 2)/60.0;
+				else temps += np/60.0;
+				estado.get(heli).get(sortida).tempsEmpleat = temps;
+				estado.get(heli).get(sortida).kmViatjats = dist;			
+			}
+			else {
+				int XG2 = grupos.get(grupsRescatats[1]).getCoordX();
+				int YG2 = grupos.get(grupsRescatats[1]).getCoordY();
+				
+				if(count == 2) {
+					estado.get(heli).get(sortida).grupsRecollits = new int[]{grupsRescatats[0],grupsRescatats[1],-1};
+					dist = (Math.sqrt (Math.pow(XG1-XC,2) + Math.pow(YG1-YC,2))) + (Math.sqrt (Math.pow(XG2-XG1,2) + Math.pow(YG2-YG1,2))) + (Math.sqrt (Math.pow(XC-XG2,2) + Math.pow(YC-YG2,2)));
+					temps = dist/VELOCITAT_HELICOPTER;
+					for(int j=0;j<2;++j) {
+						prio = grupos.get(grupsRescatats[j]).getPrioridad();
+						np = grupos.get(grupsRescatats[j]).getNPersonas();
+						if (prio == 1) temps += (np * 2)/60;
+						else temps += np/60;
+					}
+					estado.get(heli).get(sortida).tempsEmpleat = temps;
+					estado.get(heli).get(sortida).kmViatjats = dist;
+					
+				}
+				else {	
+					int XG3 = grupos.get(grupsRescatats[2]).getCoordX();
+					int YG3 = grupos.get(grupsRescatats[2]).getCoordY();
+					
+					double op1 = quantskm (XC, YC, XG1, YG1, XG2, YG2, XG3, YG3);
+					double op2 = quantskm (XC, YC, XG1, YG1, XG3, YG3, XG2, YG2);
+					double op3 = quantskm (XC, YC, XG2, YG2, XG1, YG1, XG3, YG3);
+					double op4 = quantskm (XC, YC, XG2, YG2, XG3, YG3, XG1, YG1);
+					double op5 = quantskm (XC, YC, XG3, YG3, XG1, YG1, XG2, YG2);
+					double op6 = quantskm (XC, YC, XG3, YG3, XG2, YG2, XG1, YG1);
+					
+					double bestop = minimkm(op1,op2,op3,op4,op5,op6);
+					int [] grupsordreFinal = new int[3];
+					
+					if (bestop == op1)  grupsordreFinal = new int[]{grupsRescatats[0],grupsRescatats[1],grupsRescatats[2]};
+					else if (bestop == op2)  grupsordreFinal = new int[]{grupsRescatats[0],grupsRescatats[2],grupsRescatats[1]};
+					else if (bestop == op3)  grupsordreFinal = new int[]{grupsRescatats[1],grupsRescatats[0],grupsRescatats[2]};
+					else if (bestop == op4)  grupsordreFinal = new int[]{grupsRescatats[1],grupsRescatats[2],grupsRescatats[0]};
+					else if (bestop == op5)  grupsordreFinal = new int[]{grupsRescatats[2],grupsRescatats[0],grupsRescatats[1]};
+					else if (bestop == op6)  grupsordreFinal = new int[]{grupsRescatats[2],grupsRescatats[1],grupsRescatats[0]};
+					
+					estado.get(heli).get(sortida).grupsRecollits = grupsordreFinal;
+					temps = bestop/VELOCITAT_HELICOPTER;
+					for(int j=0;j<3;++j) {
+						prio = grupos.get(grupsordreFinal[j]).getPrioridad();
+						np = grupos.get(grupsordreFinal[j]).getNPersonas();
+						if (prio == 1) temps += (np * 2)/60;
+						else temps += np/60;
+					}
+					estado.get(heli).get(sortida).tempsEmpleat = temps;
+					estado.get(heli).get(sortida).kmViatjats = bestop;
+				}
+			}   	
+		}
         
 	}
 	
