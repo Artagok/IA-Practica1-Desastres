@@ -406,10 +406,13 @@ public class ProbDesEstat {
 	}
 	
 	public void imprimeixTempsHeli(int heli){
+		double temps = 0;
 		for (int s = 0; s < getNumSortides(heli); s++){
 		    System.out.print(estado.get(heli).get(s).tempsEmpleat + "  ");
+		    temps += estado.get(heli).get(s).tempsEmpleat;
 		}
 		System.out.println();
+		System.out.println(temps);
 		System.out.println();
 	}
 	
