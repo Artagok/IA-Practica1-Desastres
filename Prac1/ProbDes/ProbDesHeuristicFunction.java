@@ -38,15 +38,6 @@ public class ProbDesHeuristicFunction implements HeuristicFunction {
     	        
     	    }
     	}
-    	 /*
-        System.out.println("-estat-");
-             for (int i=0;i<board.getNHelicopters(); i++){
-                System.out.print("heli" + i + " => ");
-                board.imprimeixHeli(i);
-             }
-        System.out.println("Heuristic: " + SumaTempsTotal);
-        System.out.println();
-           */  
     	return SumaTempsTotal;
 	}
 }	
