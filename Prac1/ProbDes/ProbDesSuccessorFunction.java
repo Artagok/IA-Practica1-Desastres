@@ -230,12 +230,13 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
             }
             if (millor){
                 System.out.print('\n');
-                System.out.println("--- ESTAT FINAL (sortides definitives) ---");
+                System.out.println("--- ESTAT FINAL ---");
                 System.out.print('\n');
                 
                 for (int i = 0; i < PGBoard.getEstado().size(); ++i) {
                     System.out.print("Heli " + i + " =>   ");
                     PGBoard.imprimeixHeli(i);
+                    PGBoard.imprimeixTempsHeli(i);
                 }
             }
         return retval;
