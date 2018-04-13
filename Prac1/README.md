@@ -1,6 +1,6 @@
 # TO DO
 1. ✔ Arreglar Reordena (FET, QUAN VULGUEU HO REPASSEM) 
-2. Arreglar Operador 2
+2. ✔ Arreglar Operador 2
 3. Print Estat final
 4. Heuristic 2 (que impliquen canvis al Main)
 5. Simulated Annealing (que implica canvis al Main i a Successors)
