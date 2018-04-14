@@ -43,16 +43,12 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                             PGBoardaux.moureGrupDHeli(heli,heli,grups.get(g),sortida); //int int int
                             PGBoardaux.reordena(heli,sortida_origen,sE);
 
-                            
-
                             if (sE.esborrada_ && sortida >= sE.sortidaEsborrada) {
                                 PGBoardaux.reordena(heli,sortida-1,sE); //sortida destí (-1 pq s'ha esborrat una que estava a la seva esquerra)
                             }
                             else {
                                 PGBoardaux.reordena(heli,sortida,sE); //sortida destí
                             }
-
-                            
 
                             retval.add (new Successor ("Moure Grup Mateix Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
                             if (millor){
@@ -68,27 +64,28 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
             } 
            
             
-            //2n operador encara no funciona
-            
-            /*
-            for (int heli1 = 0; heli1 < numHelicopters; heli1++){
+            for (int heli1 = 0; heli1 < numHelicopters; heli1++) {
                 
-                for (int heli2 = 0; heli2 < numHelicopters; heli2++){
+                for (int heli2 = 0; heli2 < numHelicopters; heli2++) {
                     
                     if (heli1 != heli2){
                         ArrayList<Integer> grups = PGBoard.getGrupsHeli(heli1); //<----- id dels grups
-                        for (int g = 0; g < grups.size(); g++){
+                        for (int g = 0; g < grups.size(); g++) {
                             
                             int sortida_origen = PGBoard.getNumSortida(heli1,grups.get(g));
                             int num_sortides = PGBoard.getNumSortides(heli2);
                             for (int sortida = 0; sortida < num_sortides; sortida++){
                                 
-                                if (PGBoard.noEsViolenRestriccions1(heli2,g,sortida)){
+                                if (PGBoard.noEsViolenRestriccions1(heli2,g,sortida)) {
                                     
                                     PGBoardaux = new ProbDesEstat(PGBoard);
-                                    PGBoardaux.moureGrupDHeli(heli1,heli2,g,sortida); //int int int int | sortida_desti
-                                    PGBoardaux.reordena(heli1,sortida_origen);
-                                    PGBoardaux.reordena(heli2,sortida); //sortida destí
+                                    // Aqui sE no te cap us pq els 2 helicopters que es veuen afectats per reordena son sempre diferents i no passa com amb op1
+                                    ProbDesEstat.SortidaEsborrada sE = PGBoardaux.new SortidaEsborrada(); // false,-1
+                                    //System.out.print("GRUPS heli"+heli1+":  ");
+                                    //for (int i = 0; i < grups.size(); i++) System.out.print(grups.get(i).intValue() + " "); System.out.println("----"); 
+                                    PGBoardaux.moureGrupDHeli(heli1,heli2,grups.get(g),sortida); //int int int int | sortida_desti
+                                    PGBoardaux.reordena(heli1,sortida_origen,sE);
+                                    PGBoardaux.reordena(heli2,sortida,sE); //sortida destí
                                     retval.add (new Successor ("Moure Grup Diferent Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
                                 }
                             }
@@ -96,7 +93,6 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     }
                 }
             }
-            */
              
             
             for (int heli = 0; heli < numHelicopters; heli++){

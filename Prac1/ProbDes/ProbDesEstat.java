@@ -213,6 +213,7 @@ public class ProbDesEstat {
 	
 	public void moureGrupDHeli (int heli1, int heli2, int grup, int sortida2) { // Mou el Grup grup del heli1 a la sortida2 del heli2 | les comprovacions prèvies ja estàn fetes, s'ha de poder fer
 		int indexSortidaOrigen = getNumSortida(heli1,grup);
+		//System.out.println("Heli: " + heli1 + " indexSortidaOrigen: " + indexSortidaOrigen + " grup: " + grup);
 		int indexGrupDinsDeS = (estado.get(heli1).get(indexSortidaOrigen)).indexGrupDinsDeSortida(grup);
 		/* Anulem el grup que movem a la Sortida Origen de heli1*/
 		estado.get(heli1).get(indexSortidaOrigen).grupsRecollits[indexGrupDinsDeS] = -1;
@@ -355,9 +356,9 @@ public class ProbDesEstat {
 			if (grup == Saux.grupsRecollits[2]) return i;
 			
 		}
-		/*System.out.println("heli:" + heli);
+		System.out.println("heli:" + heli);
 		imprimeixHeli(heli);
-		System.out.println("no s'ha trobat el grup " + grup); */
+		System.out.println("no s'ha trobat el grup " + grup);
 		return -1;
 	}
 	
