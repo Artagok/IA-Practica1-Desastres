@@ -129,8 +129,6 @@ public class ProbDesEstat {
 		// Fora del bucle pq sempre s'agafen les coordenades del centre 0
 		int XC = centros.get(0).getCoordX();
 		int YC = centros.get(0).getCoordY();
-		System.out.println(XC);
-		System.out.println(YC);
 		for(int i = 0; i < grupos.size(); i++) {//S'HA DE MIRAR QUAN ES AIXI O grupos=new Grupos(ngrupos, seed)
 			Sortida s = new Sortida();
 	
@@ -138,12 +136,7 @@ public class ProbDesEstat {
 			int YG = grupos.get(i).getCoordY();
 			int np = grupos.get(i).getNPersonas();
 			int prio = grupos.get(i).getPrioridad();
-			System.out.println(XG);
-			System.out.println(YG);
-			System.out.println(np);
-			System.out.println(prio);
 			double distancia = Math.sqrt((Math.pow(XG - XC, 2)) + (Math.pow(YG - YC, 2))); //distancia en km
-			System.out.println(distancia);
 			double temps = ((distancia * 2 )/ VELOCITAT_HELICOPTER);	//TEMPS en h que es triga en anar i tornar al lloc, sense recollir a ningu
 			if(prio == 1) temps += (np * 2)/60.0;	//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 1
 			else temps += np/60.0;				//TEMPS EN H QUE ES TRIGA EN RECOLLIR LES PERSONES D'UN GRUP de prioritat 2
@@ -167,7 +160,8 @@ public class ProbDesEstat {
 		for(int i = 0; i < grupos.size(); i++){
 		
 			Sortida s = new Sortida();
-        
+			//System.out.println(estado.size());
+			//System.out.println(i);
 			int XC = centros.get(i%c).getCoordX();
 			int YC = centros.get(i%c).getCoordY();
 			
@@ -188,7 +182,80 @@ public class ProbDesEstat {
 			
 			estado.get(i%n).add(s);
 		}
+		//System.out.println("Surto del for de ini2");
+	}
+	
+		//solucio inicial 3:
+	public void sol_ini3 (int c, int h) {    
 		
+	
+		int n = c * h;
+		int [] aQuinC = new int[grupos.size()];
+		double minDistancia,distHG;
+		int idCProper = 0;
+		double XH, YH; // X Y de l'helicopters
+		double x,y;	//X Y del grup
+		int idCentre;
+		int idSortida;
+		int minNumGrups;
+		for(int idG = 0; idG < grupos.size(); idG++) {
+			System.out.print ("Grup :" + idG + " te ->   " + grupos.get(idG).getNPersonas() + "persones" + '\n');
+			minDistancia = Math.sqrt((Math.pow(50, 2)) + (Math.pow(50, 2))); //distancia mes llarga possible, ja que seria d'una punta a l'altre dels 50x50km
+			x = grupos.get(idG).getCoordX();
+			y = grupos.get(idG).getCoordY();
+			for(int cen = 0; cen < centros.size(); cen++) {
+				idCentre = cen;
+				XH = centros.get(idCentre).getCoordX();
+				YH = centros.get(idCentre).getCoordY();
+				distHG = Math.sqrt((Math.pow(x-XH, 2)) + (Math.pow(y-YH, 2)));
+				if(distHG < minDistancia) {
+					minDistancia = distHG;
+					idCProper = idCentre;
+				}
+			}
+			aQuinC[idG] = idCProper;
+		}
+		for (int i = 0; i < n; ++i) {
+		    estado.add(new ArrayList<Sortida>(0));  
+		}
+		for(int g = 0; g < grupos.size(); g++) {
+			idSortida = -1;
+			minNumGrups = 3;
+			int numGent = grupos.get(g).getNPersonas();
+			int C = aQuinC[g];
+			int minS = estado.get(C*h).size();
+			int helicopter = C*h;
+			for(int hC = C*h;hC < (C*h + h) ; hC++) {
+				if(estado.get(hC).size() < minS) helicopter = hC;
+			}
+			for(int sh = 0; sh < estado.get(helicopter).size(); sh++){
+				int count = 3;
+				int [] gR = new int[3];
+				gR = estado.get(helicopter).get(sh).grupsRecollits;
+				int quantsRescato = 0;
+				for(int v = 0; v < 3; v++) {
+					if(gR[v] == -1) count--;
+					else quantsRescato += grupos.get(gR[v]).getNPersonas();
+				}
+				if((count < minNumGrups) && ((quantsRescato + numGent)<= 15)) {
+					minNumGrups = count;
+					idSortida = sh;
+				}
+			}
+							
+							
+			if(idSortida == -1) {
+				Sortida s = new Sortida();
+				estado.get(helicopter).add(s);
+				idSortida = estado.get(helicopter).size()-1;
+			}
+			SortidaEsborrada sNoUtil = new SortidaEsborrada();
+			estado.get(helicopter).get(idSortida).grupsRecollits[2] = g;
+			reordena(helicopter, idSortida, sNoUtil);
+			
+			
+			
+		}
 	}
 
  
@@ -207,6 +274,7 @@ public class ProbDesEstat {
 	
 	public void moureGrupDHeli (int heli1, int heli2, int grup, int sortida2) { // Mou el Grup grup del heli1 a la sortida2 del heli2 | les comprovacions prèvies ja estàn fetes, s'ha de poder fer
 		int indexSortidaOrigen = getNumSortida(heli1,grup);
+		//System.out.println("Heli: " + heli1 + " indexSortidaOrigen: " + indexSortidaOrigen + " grup: " + grup);
 		int indexGrupDinsDeS = (estado.get(heli1).get(indexSortidaOrigen)).indexGrupDinsDeSortida(grup);
 		/* Anulem el grup que movem a la Sortida Origen de heli1*/
 		estado.get(heli1).get(indexSortidaOrigen).grupsRecollits[indexGrupDinsDeS] = -1;
@@ -229,18 +297,13 @@ public class ProbDesEstat {
 		int indexSortida1 = getNumSortida(heli1,g1); // index de la sortida on es troba g1 a heli1
 		int indexSortida2 = getNumSortida(heli2,g2); // "" heli2 
 		Sortida sx1 = (estado.get(heli1).get(indexSortida1));
+
 		Sortida sx2 = (estado.get(heli2).get(indexSortida2));
+
 		int indexGrup1 = (estado.get(heli1).get(indexSortida1)).indexGrupDinsDeSortida(g1); 
 		int indexGrup2 = (estado.get(heli2).get(indexSortida2)).indexGrupDinsDeSortida(g2); // no(g2 pertany a la sortida)
 		estado.get(heli1).get(indexSortida1).grupsRecollits[indexGrup1] = g2;
 		estado.get(heli2).get(indexSortida2).grupsRecollits[indexGrup2] = g1;
-		
-		SortidaEsborrada sE_noUtil1 = new SortidaEsborrada();
-		reordena(heli1,indexSortida1,sE_noUtil1);
-		
-		SortidaEsborrada sE_noUtil2 = new SortidaEsborrada();
-		reordena(heli2,indexSortida2,sE_noUtil2);
-		
 	}
 	
 	public void moureSortida (int heli1, int sortida, int heli2) { //sortida era d'heli1, ara serà d'heli2
@@ -252,42 +315,54 @@ public class ProbDesEstat {
 		if (sortidaTePrio1(sortidaAux)) {
 			estado.get(heli2).add(0,sortidaAux);
 			
-            SortidaEsborrada sE_noUtil = new SortidaEsborrada();
-            reordena(heli2,0,sE_noUtil);
+			SortidaEsborrada sE_noUtil1 = new SortidaEsborrada(); 
+			reordena(heli2,0,sE_noUtil1);
 		}
 		else {
 			estado.get(heli2).add(sortidaAux);
 			
-			SortidaEsborrada sE_noUtil = new SortidaEsborrada();
-            reordena(heli2,estado.get(heli2).size()-1,sE_noUtil);
+			SortidaEsborrada sE_noUtil2 = new SortidaEsborrada(); 
+			reordena(heli2,estado.get(heli2).size()-1,sE_noUtil2);
 		}
 		
 	} 
 	
 	public void swapSortida (int heli1, int sortida1, int heli2, int sortida2) { //sortida1 de heli1 & sortida2 de heli2 --> sortida1 de heli2 & sortida2 de heli1
         
-        
+        //System.out.println("entra al swap sortida");
 		Sortida sortidaAux1 = new Sortida(estado.get(heli1).get(sortida1));
 		Sortida sortidaAux2 = new Sortida(estado.get(heli2).get(sortida2));
-               
+
 		estado.get(heli1).remove(sortida1);
-                
+
 		estado.get(heli2).remove(sortida2);
-               
+		
 		if (sortidaTePrio1(sortidaAux1)) {
 			estado.get(heli2).add(0,sortidaAux1);
+			
+			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
+			reordena(heli2,estado.get(heli2).size()-1,sE_noUtil);
 		}
 		else {
 			estado.get(heli2).add(sortidaAux1);
+			
+			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
+			reordena(heli2,0,sE_noUtil);
 		}
 		if (sortidaTePrio1(sortidaAux2)) {
 			estado.get(heli1).add(0,sortidaAux2);
+			
+			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
+			reordena(heli1,0,sE_noUtil);
 		}
 		else {
 			estado.get(heli1).add(sortidaAux2);
+			
+			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
+			reordena(heli1,estado.get(heli1).size()-1,sE_noUtil);
 		}
-		
 	} 
+
 
 	   /* ------ GETTERS ------ */
 	  
@@ -328,7 +403,9 @@ public class ProbDesEstat {
 			if (grup == Saux.grupsRecollits[2]) return i;
 			
 		}
-
+		System.out.println("heli:" + heli);
+		imprimeixHeli(heli);
+		System.out.println("no s'ha trobat el grup " + grup);
 		return -1;
 	}
 	
@@ -377,15 +454,16 @@ public class ProbDesEstat {
 	}
 	
 	public void imprimeixTempsHeli(int heli){
-        double temps = 0;
-        for (int s = 0; s < getNumSortides(heli); s++){
-            System.out.print(estado.get(heli).get(s).tempsEmpleat + "  ");
-            temps += estado.get(heli).get(s).tempsEmpleat;
-        }
-        System.out.println();
-        System.out.println(temps);
-        System.out.println();
+		double temps = 0;
+		for (int s = 0; s < getNumSortides(heli); s++){
+		    System.out.print(estado.get(heli).get(s).tempsEmpleat + "  ");
+		    temps += estado.get(heli).get(s).tempsEmpleat;
+		}
+		System.out.println();
+		System.out.println(temps);
+		System.out.println();
 	}
+	
 	
 	public ArrayList < ArrayList < Sortida > > getEstado () {
 		return estado;
@@ -412,8 +490,7 @@ public class ProbDesEstat {
 	}
 	
 	public boolean noEsViolenRestriccions1(int heli, int g, int sortida){ //té algun -1 | no viola rollo mes de 3 grups, mes de 15 persones, etc (lo del enunciat)
-		//System.out.println("entra a R1");
-        //imprimeixHeli(heli);
+
 		int [] grups = estado.get(heli).get(sortida).grupsRecollits;
 		boolean hiHaEspai = false;
 		for (int i = 0 ; i < 3; i++){
@@ -573,23 +650,4 @@ public class ProbDesEstat {
 		return minim;
 	}
 }
-
-
-/*
-comptar #-1
-	--> reordenar 1 --> busques quin != -1 i fas Sortida.grupsRecollits = {x,-1,-1} 
-	--> reordenar 2 --> buscar els 2 que son != -1 
-					--> valor(x,y,-1)
-					--> valor(y,x,-1)
-						--> Sortida.grupsRecollits = "best"({x,y,-1},{y,x,-1})
-		
-	--> reordenar 3
-		--> 6 combinacions
-			best(x,y,z
-				 x,z,y
-				 y,x,z
-				 y,z,x
-				 z,x,y
-				 z,y,x
-*/
 
