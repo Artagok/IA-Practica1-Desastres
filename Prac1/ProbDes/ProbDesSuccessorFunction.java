@@ -239,9 +239,25 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                 for (int i = 0; i < PGBoard.getEstado().size(); ++i) {
                     System.out.print("Heli " + i + " =>   ");
                     PGBoard.imprimeixHeli(i);
-                    PGBoard.imprimeixTempsHeli(i);
+                    //PGBoard.imprimeixTempsHeli(i);
                 }
-            }
-        return retval;
+                
+                System.out.print('\n');
+                System.out.print("temps total: ");
+                
+                double tempsTotal = 0.0;
+                int numSortides = 0;
+                for (int u = 0 ; u < PGBoard.getEstado().size(); u++) {
+                    numSortides += PGBoard.getNumSortides(u);
+                    for (int sort = 0; sort < PGBoard.getEstado().get(u).size();sort++) {
+                        tempsTotal += PGBoard.getTempsEmpleatSortida(u, sort);
+                    }
+                }
+                
+                if(numSortides > 0)  tempsTotal += ((numSortides-1)*10)/60.0;
+                tempsTotal *= 60; 
+                System.out.print(tempsTotal + "\n");
+                }
+                return retval;
         }
 }
