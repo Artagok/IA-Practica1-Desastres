@@ -81,7 +81,7 @@ public class ProbDesEstat {
 		centros = new Centros (c,h,seed);
 		grupos = new Grupos (g,seed);
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
-		sol_ini1(c,h);
+		sol_ini3(c,h);
 	}
 	
 	/* Constructora per copia */
@@ -199,7 +199,6 @@ public class ProbDesEstat {
 		int idSortida;
 		int minNumGrups;
 		for(int idG = 0; idG < grupos.size(); idG++) {
-			System.out.print ("Grup :" + idG + " te ->   " + grupos.get(idG).getNPersonas() + "persones" + '\n');
 			minDistancia = Math.sqrt((Math.pow(50, 2)) + (Math.pow(50, 2))); //distancia mes llarga possible, ja que seria d'una punta a l'altre dels 50x50km
 			x = grupos.get(idG).getCoordX();
 			y = grupos.get(idG).getCoordY();
