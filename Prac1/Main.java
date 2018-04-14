@@ -21,9 +21,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         int seed = 1234;
-        int nGrups = 6;
+        int nGrups = 10;
         int nCentres = 2;
-        int nHeliXCentre = 1;
+        int nHeliXCentre = 2;
         
         ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
 
