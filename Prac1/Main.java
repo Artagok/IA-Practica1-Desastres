@@ -20,9 +20,9 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        int seed = 1187;
+        int seed = 1912;
         int nGrups = 100;
-        int nCentres = 10;
+        int nCentres = 5;
         int nHeliXCentre = 1;
         
         ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
@@ -52,21 +52,7 @@ public class Main {
         printInstrumentation(agent.getInstrumentation());
 
         
-        System.out.print('\n');
-        System.out.print("temps total: ");
         
-        double tempsTotal = 0.0;
-        int numSortides = 0;
-        for (int u = 0 ; u < board.getEstado().size(); u++) {
-			numSortides += board.getNumSortides(u);
-			for (int sort = 0; sort < board.getEstado().get(u).size();sort++) {
-				tempsTotal += board.getTempsEmpleatSortida(u, sort);
-			}
-		}
-		
-		if(numSortides > 0)  tempsTotal += ((numSortides-1)*10)/60.0;
-		tempsTotal *= 60; 
-		System.out.print(tempsTotal + "\n");
         
     }
     
