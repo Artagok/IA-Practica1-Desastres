@@ -20,10 +20,10 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        int seed = 1234;
-        int nGrups = 10;
-        int nCentres = 2;
-        int nHeliXCentre = 2;
+        int seed = 1187;
+        int nGrups = 100;
+        int nCentres = 10;
+        int nHeliXCentre = 1;
         
         ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
 
@@ -51,15 +51,10 @@ public class Main {
         printActions(agent.getActions());
         printInstrumentation(agent.getInstrumentation());
 
-        System.out.print('\n');
-        System.out.println("--- ESTAT FINAL (sortides definitives) ---");
-        System.out.print('\n');
-        for (int i = 0; i < board.getEstado().size(); ++i) {
-            System.out.print("Heli " + i + " =>   ");
-            board.imprimeixHeli(i);
-        }
+        
         System.out.print('\n');
         System.out.print("temps total: ");
+        
         double tempsTotal = 0.0;
         int numSortides = 0;
         for (int u = 0 ; u < board.getEstado().size(); u++) {
