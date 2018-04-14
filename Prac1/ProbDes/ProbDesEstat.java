@@ -80,11 +80,6 @@ public class ProbDesEstat {
 	public ProbDesEstat (int seed, int g, int c, int h) {
 		centros = new Centros (c,h,seed);
 		grupos = new Grupos (g,seed);
-		System.out.println("seed: " + seed);
-		System.out.println("nGrups: " + g);
-		System.out.println("nCentres: " + c);
-		System.out.println("nHelicoptersXCentre: " + h);
-		System.out.println("--------------------------------");
 		estado = new ArrayList < ArrayList < Sortida > > (c*h);
 		sol_ini1(c,h);
 	}
@@ -172,8 +167,7 @@ public class ProbDesEstat {
 		for(int i = 0; i < grupos.size(); i++){
 		
 			Sortida s = new Sortida();
-			//System.out.println(estado.size());
-			//System.out.println(i);
+        
 			int XC = centros.get(i%c).getCoordX();
 			int YC = centros.get(i%c).getCoordY();
 			
@@ -194,7 +188,7 @@ public class ProbDesEstat {
 			
 			estado.get(i%n).add(s);
 		}
-		//System.out.println("Surto del for de ini2");
+		
 	}
 
  
@@ -272,24 +266,14 @@ public class ProbDesEstat {
 	
 	public void swapSortida (int heli1, int sortida1, int heli2, int sortida2) { //sortida1 de heli1 & sortida2 de heli2 --> sortida1 de heli2 & sortida2 de heli1
         
-        //System.out.println("entra al swap sortida");
+        
 		Sortida sortidaAux1 = new Sortida(estado.get(heli1).get(sortida1));
 		Sortida sortidaAux2 = new Sortida(estado.get(heli2).get(sortida2));
-                /*
-                System.out.print("heli1 abans swap: ");
-                imprimeixHeli(heli1);
-                System.out.print("heli2 abans swap: ");
-				imprimeixHeli(heli2);
-				*/
+               
 		estado.get(heli1).remove(sortida1);
-                //System.out.print("heli1 despres remove sortida1: ");
-                //imprimeixHeli(heli1);
-                //System.out.print("heli2 despres remove sortida1: ");
-                //imprimeixHeli(heli2);
+                
 		estado.get(heli2).remove(sortida2);
-                //System.out.print("heli2 despres remove sortida2: ");
-				//imprimeixHeli(heli2);
-		
+               
 		if (sortidaTePrio1(sortidaAux1)) {
 			estado.get(heli2).add(0,sortidaAux1);
 		}
@@ -302,19 +286,8 @@ public class ProbDesEstat {
 		else {
 			estado.get(heli1).add(sortidaAux2);
 		}
-		/*
-		System.out.println("	  ------------------------------");
-		System.out.print("heli1 despr swap: ");	imprimeixHeli(heli1);
-		System.out.print("heli2 despr swap: ");	imprimeixHeli(heli2);
-		System.out.println("surt del swap sortida");
-		System.out.print('\n');
-		*/
+		
 	} 
-
-
-
-
-
 
 	   /* ------ GETTERS ------ */
 	  
@@ -355,9 +328,7 @@ public class ProbDesEstat {
 			if (grup == Saux.grupsRecollits[2]) return i;
 			
 		}
-		/*System.out.println("heli:" + heli);
-		imprimeixHeli(heli);
-		System.out.println("no s'ha trobat el grup " + grup); */
+
 		return -1;
 	}
 	
@@ -455,8 +426,6 @@ public class ProbDesEstat {
 		for (int i = 0; i < 3; i++){
 			if (grups[i] != -1) NpersonesSortida += grupos.get(grups[i]).getNPersonas();
 		}
-		//System.out.println("acaba a R1");
-        //imprimeixHeli(heli);
 		
 		if (NpersonesG + NpersonesSortida > MAX_PERS_HELICOPTER) return false;
 		else return true;
@@ -482,9 +451,6 @@ public class ProbDesEstat {
    public void reordena(int heli, int sortida, SortidaEsborrada sE){ //posa la millor combinació dels grups de la sortida, si no hi ha cap grup elimina la sortida
         int [] indexGrups = new int[3];
 		int [] grupsRescatats = new int[3];
-		//System.out.println("------ Entro a reordena ------");
-		//imprimeixHeli(heli); 
-		//System.out.println("Sortida a ordernar:" + sortida);
 		indexGrups = estado.get(heli).get(sortida).grupsRecollits;
         int count = 0;
         int apuntador = 0;

@@ -5,22 +5,20 @@ import aima.search.framework.SuccessorFunction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ProbDes.ProbDesEstat;
 import ProbDes.ProbDesEstat.SortidaEsborrada;
 
-public class ProbDesSuccessorFunction implements SuccessorFunction {
+public class ProbDesSuccessorFunctionSA implements SuccessorFunction {
 
     public List getSuccessors(Object state){
     
             //System.out.println("Arribo al principi de Successors");
+            ArrayList <Successor> retvalAux = new ArrayList<Successor>();
             ArrayList <Successor> retval = new ArrayList<Successor>();
             ProbDesEstat PGBoard = (ProbDesEstat) state;
             ProbDesEstat PGBoardaux;
-             
-            boolean millor = true;
-            ProbDesHeuristicFunction gf = new ProbDesHeuristicFunction();
-            double heuristicPare = gf.getHeuristicValue(PGBoard);
                 
             int numHelicopters = PGBoard.getNHelicopters();
             
@@ -51,7 +49,11 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                             else {
                                 PGBoardaux.reordena(heli,sortida,sE); //sortida destí
                             }
-                            retval.add (new Successor ("Moure Grup Mateix Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
+
+                            
+
+                            retvalAux.add (new Successor ("Moure Grup Mateix Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
+                           
                         }
                     }
                 }
@@ -80,7 +82,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                     PGBoardaux.moureGrupDHeli(heli1,heli2,grups.get(g),sortida); //int int int int | sortida_desti
                                     PGBoardaux.reordena(heli1,sortida_origen,sE);
                                     PGBoardaux.reordena(heli2,sortida,sE); //sortida destí
-                                    retval.add (new Successor ("Moure Grup Diferent Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
+                                    retvalAux.add (new Successor ("Moure Grup Diferent Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
                                 }
                             }
                         }
@@ -111,7 +113,8 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                     PGBoardaux.swapGrupMHeli(heli,grups1.get(g1),grups2.get(g2)); //int int int
                                     PGBoardaux.reordena(heli,sortidaG1,sE_noUtil);
                                     PGBoardaux.reordena(heli,sortidaG2,sE_noUtil); //sortida destí
-                                    retval.add (new Successor ("Swap Grup Mateix Helicopter", PGBoardaux));
+                                    retvalAux.add (new Successor ("Swap Grup Mateix Helicopter", PGBoardaux));
+                                     
                             }
                         }
                     }
@@ -144,7 +147,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                         PGBoardaux.swapGrupDHeli(heli1,heli2,grups1.get(g1),grups2.get(g2)); //int int int int
                                         PGBoardaux.reordena(heli1,sortidaG1,sE_noUtil);
                                         PGBoardaux.reordena(heli2,sortidaG2,sE_noUtil); //sortida destí
-                                        retval.add (new Successor ("Swap Grup Diferent Helicopter", PGBoardaux));
+                                        retvalAux.add (new Successor ("Swap Grup Diferent Helicopter", PGBoardaux));
                                         
                                 }
                             }
@@ -166,8 +169,9 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
 							PGBoardaux = new ProbDesEstat(PGBoard);
 							PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
                             //reordena en el ProbDesEstat
-							retval.add (new Successor ("Moure Sortida", PGBoardaux));
+							retvalAux.add (new Successor ("Moure Sortida", PGBoardaux));
                              
+                            
                         }
                     }                    
                 }
@@ -187,13 +191,17 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                                 
                                 PGBoardaux = new ProbDesEstat(PGBoard);
                                 PGBoardaux.swapSortida(heli1,viatgesH1.get(v1),heli2,viatgesH2.get(v2)); //int int int int
-                                retval.add (new Successor ("Swap Sortida", PGBoardaux));
+                                retvalAux.add (new Successor ("Swap Sortida", PGBoardaux));
                                 
                             }
                         }
                     }
                 }
             }
+        Random r=new Random();
+        int f=r.nextInt(retvalAux.size());
+        retval.add(retvalAux.get(f));
+            
         return retval;
         }
 }
