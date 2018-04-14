@@ -34,7 +34,7 @@ public class ProbDesHeuristicFunction2 implements HeuristicFunction {
     	    for (int sortida = 0; sortida < estat.get(heli).size(); sortida++){
     	        
     	        if (primer) primer = false;
-    	        else SumaTempsTotal += (10.0/60.0); //suma del cooldown de l'heli
+    	        else if (sortida != estat.get(heli).size()-1) SumaTempsTotal += (10.0/60.0); //suma del cooldown de l'heli
     	        SumaTempsTotal += board.getTempsEmpleatSortida(heli,sortida);
     	        
     	    }
