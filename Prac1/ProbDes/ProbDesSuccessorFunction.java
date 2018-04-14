@@ -43,12 +43,16 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                             PGBoardaux.moureGrupDHeli(heli,heli,grups.get(g),sortida); //int int int
                             PGBoardaux.reordena(heli,sortida_origen,sE);
 
+                            
+
                             if (sE.esborrada_ && sortida >= sE.sortidaEsborrada) {
                                 PGBoardaux.reordena(heli,sortida-1,sE); //sortida destí (-1 pq s'ha esborrat una que estava a la seva esquerra)
                             }
                             else {
                                 PGBoardaux.reordena(heli,sortida,sE); //sortida destí
                             }
+
+                            
 
                             retval.add (new Successor ("Moure Grup Mateix Helicopter", PGBoardaux)); //falta el cas d'afegir una nova sortida amb un sol grup
                             if (millor){
@@ -64,7 +68,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
             } 
            
             
-            for (int heli1 = 0; heli1 < numHelicopters; heli1++) {
+           for (int heli1 = 0; heli1 < numHelicopters; heli1++) {
                 
                 for (int heli2 = 0; heli2 < numHelicopters; heli2++) {
                     
@@ -93,6 +97,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                     }
                 }
             }
+            
              
             
             for (int heli = 0; heli < numHelicopters; heli++){
@@ -184,8 +189,10 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                          
 							PGBoardaux = new ProbDesEstat(PGBoard);
 							PGBoardaux.moureSortida(heli1,viatgesH1.get(v),heli2); //int int int 
+                            //reordena en el ProbDesEstat
 							retval.add (new Successor ("Moure Sortida", PGBoardaux));
-                             if (millor){
+                             
+                            if (millor){
                                 ProbDesHeuristicFunction gf5 = new ProbDesHeuristicFunction();
                                 double heuristicFill = gf5.getHeuristicValue(PGBoardaux);
                                 if (heuristicFill < heuristicPare){

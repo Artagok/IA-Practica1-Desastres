@@ -213,7 +213,6 @@ public class ProbDesEstat {
 	
 	public void moureGrupDHeli (int heli1, int heli2, int grup, int sortida2) { // Mou el Grup grup del heli1 a la sortida2 del heli2 | les comprovacions prèvies ja estàn fetes, s'ha de poder fer
 		int indexSortidaOrigen = getNumSortida(heli1,grup);
-		//System.out.println("Heli: " + heli1 + " indexSortidaOrigen: " + indexSortidaOrigen + " grup: " + grup);
 		int indexGrupDinsDeS = (estado.get(heli1).get(indexSortidaOrigen)).indexGrupDinsDeSortida(grup);
 		/* Anulem el grup que movem a la Sortida Origen de heli1*/
 		estado.get(heli1).get(indexSortidaOrigen).grupsRecollits[indexGrupDinsDeS] = -1;
@@ -236,25 +235,18 @@ public class ProbDesEstat {
 		int indexSortida1 = getNumSortida(heli1,g1); // index de la sortida on es troba g1 a heli1
 		int indexSortida2 = getNumSortida(heli2,g2); // "" heli2 
 		Sortida sx1 = (estado.get(heli1).get(indexSortida1));
-		/* System.out.println("Ensenya sortida heli1, index sortida= " + indexSortida1);
-		for (int k=0; k<3; k++){
-			System.out.print(sx1.grupsRecollits[k]+ " ");
-		}
-		System.out.println("Grup heli1 " + g1);
-        */
 		Sortida sx2 = (estado.get(heli2).get(indexSortida2));
-		
-		/* System.out.println("Ensenya sortida heli2");
-		for (int k=0; k<3; k++){
-			System.out.print(sx2.grupsRecollits[k]+ " ");
-		}
-		System.out.println("Grup heli1 " + g2);
-        */
-
 		int indexGrup1 = (estado.get(heli1).get(indexSortida1)).indexGrupDinsDeSortida(g1); 
 		int indexGrup2 = (estado.get(heli2).get(indexSortida2)).indexGrupDinsDeSortida(g2); // no(g2 pertany a la sortida)
 		estado.get(heli1).get(indexSortida1).grupsRecollits[indexGrup1] = g2;
 		estado.get(heli2).get(indexSortida2).grupsRecollits[indexGrup2] = g1;
+		
+		SortidaEsborrada sE_noUtil1 = new SortidaEsborrada();
+		reordena(heli1,indexSortida1,sE_noUtil1);
+		
+		SortidaEsborrada sE_noUtil2 = new SortidaEsborrada();
+		reordena(heli2,indexSortida2,sE_noUtil2);
+		
 	}
 	
 	public void moureSortida (int heli1, int sortida, int heli2) { //sortida era d'heli1, ara serà d'heli2
@@ -265,10 +257,17 @@ public class ProbDesEstat {
 		// Si la sortida te grups de prio=1 l'afegirem pel principi, si no l'afegirem pel final (al vector de sortides de heli2)
 		if (sortidaTePrio1(sortidaAux)) {
 			estado.get(heli2).add(0,sortidaAux);
+			
+            SortidaEsborrada sE_noUtil = new SortidaEsborrada();
+            reordena(heli2,0,sE_noUtil);
 		}
 		else {
 			estado.get(heli2).add(sortidaAux);
+			
+			SortidaEsborrada sE_noUtil = new SortidaEsborrada();
+            reordena(heli2,estado.get(heli2).size()-1,sE_noUtil);
 		}
+		
 	} 
 	
 	public void swapSortida (int heli1, int sortida1, int heli2, int sortida2) { //sortida1 de heli1 & sortida2 de heli2 --> sortida1 de heli2 & sortida2 de heli1
@@ -356,9 +355,9 @@ public class ProbDesEstat {
 			if (grup == Saux.grupsRecollits[2]) return i;
 			
 		}
-		System.out.println("heli:" + heli);
+		/*System.out.println("heli:" + heli);
 		imprimeixHeli(heli);
-		System.out.println("no s'ha trobat el grup " + grup);
+		System.out.println("no s'ha trobat el grup " + grup); */
 		return -1;
 	}
 	
@@ -407,16 +406,15 @@ public class ProbDesEstat {
 	}
 	
 	public void imprimeixTempsHeli(int heli){
-		double temps = 0;
-		for (int s = 0; s < getNumSortides(heli); s++){
-		    System.out.print(estado.get(heli).get(s).tempsEmpleat + "  ");
-		    temps += estado.get(heli).get(s).tempsEmpleat;
-		}
-		System.out.println();
-		System.out.println(temps);
-		System.out.println();
+        double temps = 0;
+        for (int s = 0; s < getNumSortides(heli); s++){
+            System.out.print(estado.get(heli).get(s).tempsEmpleat + "  ");
+            temps += estado.get(heli).get(s).tempsEmpleat;
+        }
+        System.out.println();
+        System.out.println(temps);
+        System.out.println();
 	}
-	
 	
 	public ArrayList < ArrayList < Sortida > > getEstado () {
 		return estado;
