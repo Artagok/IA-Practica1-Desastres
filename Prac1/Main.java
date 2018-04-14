@@ -24,7 +24,7 @@ public class Main {
         int nGrups = 100;
         int nCentres = 5;
         int nHeliXCentre = 1;
-        int algorisme = 1;
+        int algorisme = 1; 
         
         System.out.println("Select mode: 1 automatic, 2 manual");
         Scanner reader = new Scanner(System.in);  
