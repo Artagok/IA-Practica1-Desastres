@@ -340,13 +340,13 @@ public class ProbDesEstat {
 			estado.get(heli2).add(0,sortidaAux1);
 			
 			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
-			reordena(heli2,estado.get(heli2).size()-1,sE_noUtil);
+			reordena(heli2,0,sE_noUtil);
 		}
 		else {
 			estado.get(heli2).add(sortidaAux1);
 			
 			SortidaEsborrada sE_noUtil = new SortidaEsborrada(); 
-			reordena(heli2,0,sE_noUtil);
+			reordena(heli2,estado.get(heli2).size()-1,sE_noUtil);
 		}
 		if (sortidaTePrio1(sortidaAux2)) {
 			estado.get(heli1).add(0,sortidaAux2);
