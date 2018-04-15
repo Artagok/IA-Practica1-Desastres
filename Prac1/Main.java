@@ -20,7 +20,8 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         
-        int seed = 1912; 
+        
+        int seed = 32809; 
         int nGrups = 100;
         int nCentres = 5;
         int nHeliXCentre = 1;
@@ -44,7 +45,7 @@ public class Main {
         Search alg;
 
         if (algorisme == 1){ //HC
-            p = new Problem (board, new ProbDesSuccessorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction());
+            p = new Problem (board, new ProbDesSuccessorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction2());
             alg = new HillClimbingSearch();
         }
         else {
@@ -54,8 +55,25 @@ public class Main {
             double l=0.002;
             p = new Problem (board, new ProbDesSuccessorFunctionSA(), new ProbDesGoalTest(), new ProbDesHeuristicFunction());
             alg =new SimulatedAnnealingSearch(maxit,iter,k,l);
-        }
-    
+        }   /*
+        System.out.print('\n');
+                System.out.print("temps total: ");
+                
+                double tempsTotal = 0.0;
+                int numSortides = 0;
+                for (int u = 0 ; u < PGBoard.getEstado().size(); u++) {
+                    numSortides += PGBoard.getNumSortides(u);
+                    for (int sort = 0; sort < PGBoard.getEstado().get(u).size();sort++) {
+                        tempsTotal += PGBoard.getTempsEmpleatSortida(u, sort);
+                    }
+                }
+                
+                if(numSortides > 0)  tempsTotal += ((numSortides-1)*10)/60.0;
+                tempsTotal *= 60; 
+                System.out.print(tempsTotal + "\n");
+                */
+        double tini = System.currentTimeMillis();
+        
         SearchAgent agent = new SearchAgent(p, alg);
         
         if (algorisme==1) printActions(agent.getActions());
@@ -77,24 +95,8 @@ public class Main {
         
         System.out.println("Temps Total: " + heuristicValue * 60.0);
         System.out.println();
+        System.out.println("Temps d'execució: " +(System.currentTimeMillis()-tini)/1000);   
         
-        /*
-        System.out.print('\n');
-                System.out.print("temps total: ");
-                
-                double tempsTotal = 0.0;
-                int numSortides = 0;
-                for (int u = 0 ; u < PGBoard.getEstado().size(); u++) {
-                    numSortides += PGBoard.getNumSortides(u);
-                    for (int sort = 0; sort < PGBoard.getEstado().get(u).size();sort++) {
-                        tempsTotal += PGBoard.getTempsEmpleatSortida(u, sort);
-                    }
-                }
-                
-                if(numSortides > 0)  tempsTotal += ((numSortides-1)*10)/60.0;
-                tempsTotal *= 60; 
-                System.out.print(tempsTotal + "\n");
-                */
         
     }
     
