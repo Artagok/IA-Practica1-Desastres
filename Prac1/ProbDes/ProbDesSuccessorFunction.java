@@ -40,7 +40,7 @@ public class ProbDesSuccessorFunction implements SuccessorFunction {
                           
                             PGBoardaux = new ProbDesEstat(PGBoard);
                             ProbDesEstat.SortidaEsborrada sE = PGBoardaux.new SortidaEsborrada(); // false,-1
-                            PGBoardaux.moureGrupDHeli(heli,heli,grups.get(g),sortida); //int int int
+                            PGBoardaux.moureGrupMHeli(heli,grups.get(g),sortida); //int int int
                             PGBoardaux.reordena(heli,sortida_origen,sE);
 
                             
