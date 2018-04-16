@@ -21,23 +21,29 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         
-        int seed = 32809; 
+        int seed = 87523;
         int nGrups = 100;
         int nCentres = 5;
         int nHeliXCentre = 1;
         int algorisme = 1; 
         
-        System.out.println("Select mode: 1 automatic, 2 manual");
-        Scanner reader = new Scanner(System.in);  
-        int modo = reader.nextInt();
+        //System.out.println("Select mode: 1 automatic, 2 manual");
+        //Scanner reader = new Scanner(System.in);  
+        //int modo = reader.nextInt();
+        int modo = Integer.parseInt(args[0]); // SCRIPT
         if (modo == 2){
-            System.out.println("Ordre parametres: seed, nGrups, nCentres, nHeliXCentre");
-            seed=reader.nextInt();
-            nGrups=reader.nextInt();
-            nCentres=reader.nextInt();
-            nHeliXCentre=reader.nextInt();
-            System.out.println("Algoritme de busqueda: 1 HC, 2 SA");
-            algorisme=reader.nextInt();
+            //System.out.println("Ordre parametres: seed, nGrups, nCentres, nHeliXCentre");
+            //seed=reader.nextInt();
+            seed = Integer.parseInt(args[1]);
+            //nGrups=reader.nextInt();
+            nGrups = Integer.parseInt(args[2]);
+            //nCentres=reader.nextInt();
+            nCentres = Integer.parseInt(args[3]);
+            //nHeliXCentre=reader.nextInt();
+            nHeliXCentre = Integer.parseInt(args[4]);
+            //System.out.println("Algoritme de busqueda: 1 HC, 2 SA");
+            //algorisme=reader.nextInt();
+            algorisme = Integer.parseInt(args[5]);
         }
         
         ProbDesEstat board = new ProbDesEstat (seed, nGrups , nCentres , nHeliXCentre);
@@ -45,7 +51,7 @@ public class Main {
         Search alg;
 
         if (algorisme == 1){ //HC
-            p = new Problem (board, new ProbDesSuccessorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction2());
+            p = new Problem (board, new ProbDesSuccessorFunction(), new ProbDesGoalTest(), new ProbDesHeuristicFunction());
             alg = new HillClimbingSearch();
         }
         else {
